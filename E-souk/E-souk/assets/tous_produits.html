@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tous les Produits - ArtisanHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/styles.css" />
+
+  </head>
+  <>
+    <!-- Navbar -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm"
+    >
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="index.html">
+          <img src="./images/logo.png" alt="ArtisanHub" height="40" />
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarMain"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Main Nav Links -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav me-auto">
+            <!-- Categories Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="categoriesDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                >Produits</a
+              >
+              <ul class="dropdown-menu">
+                <!-- Tapis & Kilims -->
+                <li class="dropdown-submenu">
+                  <a class="dropdown-item dropdown-toggle" href="#"
+                    >Tapis & Kilims</a
+                  >
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Fouta Tov</a></li>
+                    <li><a class="dropdown-item" href="#">Runners</a></li>
+                    <li><a class="dropdown-item" href="#">Kilim</a></li>
+                    <li>
+                      <a class="dropdown-item" href="#">Tapis Modernes</a>
+                    </li>
+                  </ul>
+                </li>
+
+                <!-- Accessoires -->
+                <li class="dropdown-submenu">
+                  <a class="dropdown-item dropdown-toggle" href="#"
+                    >Accessoires</a
+                  >
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Écharpes</a></li>
+                    <li><a class="dropdown-item" href="#">Sacs</a></li>
+                    <li><a class="dropdown-item" href="#">Bijoux</a></li>
+                    <li><a class="dropdown-item" href="#">Babouches</a></li>
+                  </ul>
+                </li>
+
+                <!-- Poterie -->
+                <li class="dropdown-submenu">
+                  <a class="dropdown-item dropdown-toggle" href="#">Poterie</a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#">Ensembles Décorés</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Ensembles Unis</a>
+                    </li>
+                    <li><a class="dropdown-item" href="#">Tajines</a></li>
+                    <li><a class="dropdown-item" href="#">Assiettes</a></li>
+                    <li><a class="dropdown-item" href="#">Bol</a></li>
+                  </ul>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="tous_produits.html"
+                    >Tous les produits</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="nouveautés.html">Nouveautés</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">À PROPOS</a>
+            </li>
+          </ul>
+
+          <!-- Search Bar -->
+          <form class="d-flex mx-lg-3">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Rechercher..."
+              />
+              <button class="btn btn-outline-secondary" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- User, Wishlist, and Cart Icons -->
+          <div class="d-flex">
+            <a href="login.html" class="nav-link me-3">
+              <i class="fas fa-user"></i>
+            </a>
+            <a href="wishlist.html" class="nav-link me-3 position-relative">
+              <i class="fas fa-heart"></i>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                0
+              </span>
+            </a>
+            <a href="cart.html" class="nav-link position-relative">
+              <i class="fas fa-shopping-cart"></i>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                0
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Products Section -->
+    <section class="container py-5">
+      <div class="row">
+        <!-- Filters Column -->
+        <div class="col-lg-3 mb-4">
+          <div class="filter-section">
+            <h5 class="mb-4">Filtrer les produits</h5>
+
+            <!-- Categories Filter -->
+            <div class="mb-4">
+              <h6>Catégories</h6>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="vetements"
+                  checked
+                />
+                <label class="form-check-label" for="vetements"
+                  >Vêtements</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="accessoires"
+                  checked
+                />
+                <label class="form-check-label" for="accessoires"
+                  >Accessoires</label
+                >
+              </div>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="mb-4">
+              <h6>Prix</h6>
+              <div class="d-flex justify-content-between">
+                <span>0 DT</span>
+                <span>500 DT</span>
+              </div>
+              <input
+                type="range"
+                class="form-range"
+                min="0"
+                max="500"
+                step="10"
+                id="priceRange"
+              />
+            </div>
+
+            <!-- Size Filter -->
+            <div class="mb-4">
+              <h6>Taille</h6>
+              <div class="btn-group btn-group-sm" role="group">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="size"
+                  id="size-all"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn btn-outline-secondary" for="size-all"
+                  >Tous</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="size"
+                  id="size-s"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-secondary" for="size-s">S</label>
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="size"
+                  id="size-m"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-secondary" for="size-m">M</label>
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="size"
+                  id="size-l"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-secondary" for="size-l">L</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100">Appliquer les filtres</button>
+          </div>
+        </div>
+
+        <!-- Products Column -->
+        <div class="col-lg-9">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Tous nos produits artisanaux</h2>
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-dark dropdown-toggle"
+                type="button"
+                id="sortDropdown"
+                data-bs-toggle="dropdown"
+              >
+                Trier par: Pertinence
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Pertinence</a></li>
+                <li><a class="dropdown-item" href="#">Prix croissant</a></li>
+                <li><a class="dropdown-item" href="#">Prix décroissant</a></li>
+                <li><a class="dropdown-item" href="#">Plus récents</a></li>
+                <li><a class="dropdown-item" href="#">Meilleures notes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="row g-4">
+            <!-- Product 1 -->
+            <div class="col-md-4 col-6">
+              <div class="card h-100 product-card">
+                <span class="badge badge-new">Nouveau</span>
+                <img
+                  src="https://via.placeholder.com/300x300?text=Robe+Traditionnelle"
+                  class="card-img-top"
+                  alt="Robe Traditionnelle"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">Robe Traditionnelle</h5>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span class="text-primary fw-bold">120 DT</span>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                  </div>
+                  <button class="btn btn-dark w-100 mt-2">
+                    Ajouter au panier
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="col-md-4 col-6">
+              <div class="card h-100 product-card">
+                <img
+                  src="https://via.placeholder.com/300x300?text=Sac+en+Cuir"
+                  class="card-img-top"
+                  alt="Sac en Cuir"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">Sac en Cuir</h5>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span class="text-primary fw-bold">180 DT</span>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                  </div>
+                  <button class="btn btn-dark w-100 mt-2">
+                    Ajouter au panier
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add more products following the same pattern (8-12 total) -->
+          </div>
+
+          <!-- Pagination -->
+          <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Précédent</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Suivant</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- Include your standard footer, newsletter, and back-to-top button here -->
+    <!-- Bootstrap & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </<script src="./js/main.js"></script>
+</html>

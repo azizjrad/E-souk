@@ -1,0 +1,235 @@
+/* assets/css/style.css */
+/* =================== Color Variables =================== */
+:root {
+  --color-white: #fcfcfc;
+  --color-dark: #1a2454;
+  --color-medium: #2b3684;
+  --color-primary: #3c48b5;
+  --color-accent: #4d5ae6;
+  --color-shadow: rgba(26, 36, 84, 0.1);
+}
+
+/* =================== Base & Utilities =================== */
+.badge {
+  font-size: 0.6rem;
+}
+
+/* =================== Navigation Styles =================== */
+.navbar {
+  padding: 15px 0;
+  background: var(--color-white);
+}
+
+.navbar-brand img {
+  max-height: 50px;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+  color: var(--color-dark) !important;
+}
+
+.nav-link:hover {
+  color: var(--color-accent) !important;
+}
+
+/* =================== Dropdown System =================== */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 5px 15px var(--color-shadow);
+  background: var(--color-white);
+}
+
+.dropdown-item {
+  transition: color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  color: var(--color-accent) !important;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 200px;
+  margin-top: -6px;
+  margin-left: 0.1rem;
+  display: none;
+  z-index: 1051;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* =================== Search Input =================== */
+.input-group {
+  width: 300px;
+}
+
+
+/* =================== Hero Section =================== */
+.hero {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+/* =================== Image Section =================== */
+.image {
+  padding: 20px 0;
+}
+
+.block-image.sc-2 {
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--color-medium);
+}
+
+.block-image.sc-2 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+
+
+/* =================== Card Component =================== */
+.card {
+  transition: transform 0.3s;
+  border: 1px solid var(--color-medium);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px var(--color-shadow);
+}
+
+/* =================== Footer Styles =================== */
+footer {
+  background: var(--color-dark);
+}
+
+footer h5 {
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+footer a {
+  color: var(--color-white);
+  font-size: 1.2rem;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+footer a:hover {
+  color: var(--color-accent);
+  transform: translateY(-3px) scale(1.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons a {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+/* =================== Scroll Top Button =================== */
+.tunisian-scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-medium) 0%, var(--color-primary) 100%);
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+  box-shadow: 0 0 10px rgba(76, 90, 230, 0.2);
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.tunisian-scroll-top:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(76, 90, 230, 0.3);
+}
+
+.image.mb-2 {
+  position: relative;
+  margin-top: -80px; /* Adjust based on your needs */
+  z-index: 1;
+}
+
+@media (max-width: 850px) {
+  .wave-container::before {
+    height: 43.5px;
+  }
+}
+
+/* =================== Responsive Adjustments =================== */
+@media (max-width: 991.98px) {
+  .dropdown-submenu > .dropdown-menu {
+    position: static;
+    left: auto;
+    margin-left: 1rem;
+    margin-top: 0;
+    border-left: 2px solid rgba(76, 90, 230, 0.1);
+    box-shadow: none;
+  }
+
+  .dropdown-submenu:hover > .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown-submenu.show > .dropdown-menu {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .block-image.sc-2 {
+    width: 95%;
+    border-radius: 15px;
+  }
+
+  .tunisian-scroll-top {
+    display: none !important;
+  }
+}
+
+/* =================== Animations =================== */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+footer a:hover i {
+  animation: pulse 0.5s ease infinite alternate;
+}
