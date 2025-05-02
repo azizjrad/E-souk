@@ -1,0 +1,447 @@
+/* Enhanced About Hero Section */
+.hero-section {
+  position: relative;
+  padding: 80px 0;
+  background-color: var(--color-dark);
+  overflow: hidden;
+  margin-bottom: 0 !important;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/Hero.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) brightness(0.5);
+  transform: scale(1.1);
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 36, 84, 0.85) 0%,
+    rgba(60, 72, 181, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 1s ease;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  opacity: 0.95;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+.hero-buttons {
+  animation: fadeInUp 1s ease 0.4s both;
+}
+
+/* Fix for hero buttons hover animations */
+.hero-buttons .btn {
+  border-radius: 30px;
+  padding: 12px 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.hero-buttons .btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-medium) 0%,
+    var(--color-accent) 100%
+  );
+  border: none;
+  box-shadow: 0 4px 15px rgba(77, 90, 230, 0.3);
+}
+
+/* Fix hover animation for primary button */
+.hero-buttons .btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(77, 90, 230, 0.5);
+}
+
+.hero-buttons .btn-outline-light {
+  border: 2px solid white;
+  background: transparent;
+}
+
+/* Fix hover animation for outline button */
+.hero-buttons .btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Tunisian Chechia 3D Styling */
+.hero-featured-3d {
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+  animation: fadeIn 1s ease 0.6s both;
+}
+
+.floating-chechia {
+  position: relative;
+  width: 300px;
+  height: 250px;
+  transform-style: preserve-3d;
+  animation: floatAnimation 5s ease-in-out infinite,
+    rotateSlightly 12s linear infinite;
+}
+
+.chechia-base {
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  bottom: 0;
+  border-radius: 50% 50% 10% 10% / 80% 80% 20% 20%;
+  background: linear-gradient(145deg, #ce1126, #b60e23);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform-style: preserve-3d;
+  transform: translateZ(20px);
+}
+
+.chechia-base::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+  border-radius: 0 0 10% 10% / 0 0 20% 20%;
+}
+
+.chechia-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 10% 10% / 80% 80% 20% 20%;
+  background: radial-gradient(circle at center, #ce1126, #8a0d1c);
+  transform: translateZ(0);
+  overflow: hidden;
+}
+
+.chechia-top::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(220, 50, 50, 0.8),
+    transparent
+  );
+  animation: shineEffect 4s ease-in-out infinite;
+}
+
+.chechia-tassel {
+  position: absolute;
+  width: 8%;
+  height: 35%;
+  background: #000;
+  top: 15%;
+  left: 46%;
+  transform: translateZ(30px);
+  border-radius: 30% 30% 0 0;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.chechia-tassel::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 60%;
+  bottom: -60%;
+  left: -50%;
+  background: #111;
+  border-radius: 50%;
+}
+
+.chechia-tassel::after {
+  content: "";
+  position: absolute;
+  width: 300%;
+  height: 20%;
+  bottom: -80%;
+  left: -100%;
+  background: #222;
+  border-radius: 50%;
+}
+
+/* Decorative patterns */
+.chechia-top::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15%;
+  background: linear-gradient(
+    to right,
+    #ce1126 0%,
+    #ce1126 10%,
+    #8a0d1c 10%,
+    #8a0d1c 20%,
+    #ce1126 20%,
+    #ce1126 30%,
+    #8a0d1c 30%,
+    #8a0d1c 40%,
+    #ce1126 40%,
+    #ce1126 50%,
+    #8a0d1c 50%,
+    #8a0d1c 60%,
+    #ce1126 60%,
+    #ce1126 70%,
+    #8a0d1c 70%,
+    #8a0d1c 80%,
+    #ce1126 80%,
+    #ce1126 90%,
+    #8a0d1c 90%,
+    #8a0d1c 100%
+  );
+  opacity: 0.5;
+}
+
+/* Animation keyframes */
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotateSlightly {
+  0% {
+    transform: rotateY(0deg) rotateX(10deg);
+  }
+  25% {
+    transform: rotateY(90deg) rotateX(5deg);
+  }
+  50% {
+    transform: rotateY(180deg) rotateX(0deg);
+  }
+  75% {
+    transform: rotateY(270deg) rotateX(5deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(10deg);
+  }
+}
+
+@keyframes shineEffect {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* Original animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-shape {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  line-height: 0;
+}
+
+/* apropos notre mission section */
+.mission-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+.mission-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 15px 30px rgba(77, 90, 230, 0.2) !important;
+}
+.mission-icon {
+  transition: all 0.3s ease;
+}
+.mission-card:hover .mission-icon {
+  transform: scale(1.1);
+  background-color: var(--color-accent) !important;
+}
+.mission-card:hover h4 {
+  color: var(--color-primary);
+}
+.mission-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--color-primary);
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+.mission-card:hover::before {
+  transform: translateY(0);
+}
+.mission-card .card-body {
+  position: relative;
+  z-index: 1;
+}
+/* Team images styling */
+.team-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* Changed from 125% to 75% to create a 4:3 aspect ratio */
+    overflow: hidden;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.team-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top; /* Keeps focus on faces */
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover .team-image {
+    transform: scale(1.05);
+}
+
+/* Make sure cards have the same height */
+.team-card {
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Change primary button color to #2b3684 */
+.btn-primary {
+  background-color: #2b3684;
+  border-color: #2b3684;
+  box-shadow: 0 4px 15px rgba(43, 54, 132, 0.3);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #232c6d; /* slightly darker on hover */
+  border-color: #232c6d;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(43, 54, 132, 0.5);
+}
+
+/* Update outline button to use the same blue */
+.btn-outline-primary {
+  border: 2px solid #2b3684;
+  color: #2b3684;
+  background: transparent;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: rgba(43, 54, 132, 0.1);
+  border-color: #2b3684;
+  color: #2b3684;
+  transform: translateY(-3px);
+}
+
+/* Media Queries */
+@media (max-width: 991.98px) {
+  .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-buttons .btn {
+    margin: 5px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

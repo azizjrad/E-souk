@@ -1,0 +1,19 @@
+.text-custom-blue {
+  color: #2b3684 !important;
+}
+.border-custom-blue-subtle {
+  border-color: rgba(43, 54, 132, 0.2) !important;
+}
+.bg-custom-blue {
+  background-color: #2b3684 !important;
+  color: white !important;
+}
+.btn-custom-blue {
+  background-color: #2b3684 !important;
+  border-color: #2b3684 !important;
+  color: white !important;
+}
+.btn-custom-blue:hover {
+  background-color: #232d6e !important;
+  border-color: #232d6e !important;
+}
