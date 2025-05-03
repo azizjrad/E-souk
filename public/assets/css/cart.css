@@ -1,0 +1,102 @@
+/* Cart Page Styling - Match with wishlist design */
+:root {
+  --primary-color: #2b3684;
+  --secondary-color: #2b3684;
+  --accent-color: #f8921d;
+  --light-bg: #f8f9fa;
+  --text-dark: #333;
+  --text-medium: #555;
+  --text-light: #777;
+  --white: #fff;
+  --border-radius: 10px;
+  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s ease;
+}
+
+/* Match section title with wishlist */
+.section-title {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.btn-medium {
+  background-color: var(--white);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 30px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-medium:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Continue shopping button - match wishlist style */
+.btn-outline-primary {
+  background-color: var(--light-bg);
+  color: var(--text-medium);
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* Additional cart-specific enhancements */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: #242e73;
+  border-color: #242e73;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Quantity input styling */
+.input-group-sm .btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background-color: var(--white);
+}
+
+.input-group-sm .btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Cart item hover effect */
+.card:hover {
+  box-shadow: var(--hover-shadow);
+  transition: var(--transition);
+}
+
+/* Order summary section styling */
+.sticky-top .card-body h4 {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+hr {
+  border-color: rgba(43, 54, 132, 0.2);
+}

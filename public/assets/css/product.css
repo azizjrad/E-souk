@@ -1,0 +1,602 @@
+/* Enhanced Product Page Styling */
+:root {
+  --primary-color: #2b3684;
+  --secondary-color: #3a468c;
+  --light-bg: #f8f9fa;
+  --text-dark: #333;
+  --text-medium: #555;
+  --text-light: #777;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --white: #fff;
+  --border-radius: 10px;
+  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s ease;
+}
+
+body .category-hero-section {
+  position: relative;
+  padding: 80px 0;
+  background-color: #1a2454;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/category-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.hero-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 36, 84, 0.9) 0%,
+    rgba(60, 72, 181, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.category-hero-section .breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.category-hero-section .breadcrumb-item a {
+  text-decoration: none;
+  color: #fff;
+  opacity: 0.9;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.category-hero-section .breadcrumb-item a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.category-hero-section .breadcrumb-item.active {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.category-hero-section .breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body .category-hero-section .hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease-out;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+
+/* Hero Subtitle - Add this after your hero-title class */
+body .category-hero-section .hero-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  animation: fadeInUp 1s ease-out;
+  max-width: 650px;
+  opacity: 0.95;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+/* Key Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Filter Section Styling */
+.filter-section {
+  background-color: var(--white);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 30px;
+}
+
+.filter-section h5 {
+  color: var(--primary-color);
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.filter-section h5::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 60px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.filter-section h6 {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+/* Form Controls */
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.form-check-label {
+  color: var(--text-medium);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.form-check-label:hover {
+  color: var(--primary-color);
+}
+
+/* Price Range Slider */
+.noUi-connect {
+  background: var(--primary-color) !important;
+}
+
+.noUi-handle {
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--primary-color);
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.noUi-handle:focus {
+  outline: none;
+}
+
+.noUi-horizontal {
+  height: 8px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 18px;
+  height: 18px;
+  top: -5px;
+  right: -9px;
+}
+
+/* Remove the default handle styling */
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+
+/* Filter Button */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(43, 54, 132, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(43, 54, 132, 0.4);
+}
+
+/* Sort Dropdown - Renamed to avoid navbar conflicts */
+.product-sort-toggle {
+  border-radius: 30px;
+  border: 1px solid #e0e0e0;
+  padding: 8px 20px;
+  background-color: var(--white);
+  color: var(--text-medium);
+  transition: var(--transition);
+}
+
+.product-sort-toggle:hover,
+.product-sort-toggle:focus {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background-color: rgba(43, 54, 132, 0.05);
+}
+
+.product-sort-menu {
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: none;
+  padding: 10px 0;
+}
+
+.dropdown-item {
+  padding: 8px 20px;
+  color: var(--text-medium);
+  transition: var(--transition);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(43, 54, 132, 0.1);
+  color: var(--primary-color);
+}
+
+/* Products Grid and Cards - UPDATED */
+.product-card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+  height: 100%;
+  position: relative;
+  max-width: 320px; /* Make card smaller */
+  margin: 0 auto; /* Center card if smaller than column */
+}
+
+.product-card:hover {
+  transform: translateY(-7px);
+  box-shadow: var(--hover-shadow);
+}
+
+.product-card .card-img-top {
+  height: 180px; /* Reduced height */
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .card-img-top {
+  transform: scale(1.08);
+}
+
+.product-card .card-body {
+  padding: 15px; /* Reduced padding */
+}
+
+/* Layout for name and price in same row */
+.product-card .card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.product-card .card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0; /* Remove bottom margin */
+  flex: 1; /* Take available space */
+}
+
+.product-card .price {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.product-card .card-text {
+  color: var(--text-light);
+  margin-bottom: 15px;
+  height: 40px;
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+/* Wishlist Button */
+.wishlist-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+}
+
+.wishlist-btn i {
+  font-size: 18px;
+  color: #888;
+  transition: all 0.2s ease;
+}
+
+/* Add this new rule to change heart color on hover */
+.wishlist-btn:hover i {
+  color: #e74c3c; /* Red heart on hover */
+}
+
+.wishlist-btn i.active {
+  color: #e74c3c;
+  font-weight: 900;
+}
+
+/* Use solid heart when active */
+.wishlist-btn i.active:before {
+  content: "\f004";
+  font-weight: 900;
+}
+
+/* Animation for adding to wishlist */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.wishlist-btn i.heart-beat {
+  animation: heartBeat 1s ease-in-out;
+}
+
+/* Add this CSS to your product.css file */
+
+/* Wishlist button active state */
+.wishlist-btn i.fas {
+  color: #e74c3c !important; /* Red heart for active state */
+}
+
+/* Animation for toggling wishlist */
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.wishlist-btn i.fas {
+  animation: heartPulse 0.5s ease-in-out;
+}
+
+/* Badge styling - UPDATED */
+.badge.bg-danger.best-seller-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: #fcd34d !important;
+  color: #000;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+/* New stock badge styling */
+.stock-badge {
+  position: absolute;
+  top: 48px; /* Position below best seller badge */
+  left: 15px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.stock-badge.in-stock {
+  background-color: rgba(40, 167, 69, 0.9);
+  color: white;
+  backdrop-filter: blur(2px);
+}
+
+.stock-badge.out-of-stock {
+  background-color: rgba(220, 53, 69, 0.9);
+  color: white;
+  backdrop-filter: blur(2px);
+}
+
+/* Add to Cart Button */
+.btn-dark {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  border: none;
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-weight: 600;
+  transition: var(--transition);
+  color: var(--white);
+  box-shadow: 0 4px 10px rgba(43, 54, 132, 0.3);
+}
+
+.btn-dark:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color) 0%,
+    var(--primary-color) 100%
+  );
+  box-shadow: 0 6px 15px rgba(43, 54, 132, 0.4);
+}
+
+/* Pagination Styling */
+.pagination {
+  margin-top: 40px;
+}
+
+.pagination .page-link {
+  color: var(--primary-color);
+  border-radius: 30px;
+  margin: 0 3px;
+  transition: var(--transition);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white); /* Ensure text is white for contrast */
+  font-weight: bold; /* Make the number more visible */
+}
+
+.pagination .page-link:hover {
+  background-color: rgba(43, 54, 132, 0.1);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* Empty results */
+.alert-info {
+  background-color: rgba(43, 54, 132, 0.1);
+  color: var(--primary-color);
+  border-color: rgba(43, 54, 132, 0.2);
+  border-radius: var(--border-radius);
+  padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .filter-section {
+    padding: 20px;
+  }
+
+  .product-card .card-img-top {
+    height: 160px;
+  }
+
+  .category-hero-section {
+    padding: 60px 0;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-card .card-img-top {
+    height: 140px;
+  }
+
+  .product-card .card-body {
+    padding: 12px;
+  }
+
+  .product-card .card-title {
+    font-size: 0.95rem;
+  }
+
+  .product-card .price {
+    font-size: 1rem;
+  }
+
+  .category-hero-section {
+    padding: 50px 0;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .col-6 {
+    padding: 0 8px;
+  }
+
+  .g-4 {
+    --bs-gutter-x: 16px;
+  }
+
+  .product-card .card-img-top {
+    height: 120px;
+  }
+
+  .product-card .card-body {
+    padding: 10px;
+  }
+
+  .btn-dark {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .category-hero-section {
+    padding: 40px 0;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+}

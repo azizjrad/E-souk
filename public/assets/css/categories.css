@@ -1,0 +1,221 @@
+/* Hero Section - Solid background color */
+.categories-hero {
+  background-color: #2b3684;
+  padding: 80px 0;
+  color: white;
+  margin-bottom: 4rem;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.categories-hero h1,
+.categories-hero p {
+  color: white !important;
+  position: relative;
+  z-index: 2;
+}
+
+.categories-hero .display-4 {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Category Container */
+.category-container {
+  margin-bottom: 6rem;
+}
+
+.category-row {
+  margin-bottom: 5rem;
+  position: relative;
+  padding: 2rem 0;
+}
+
+/* Category Name Styling */
+.category-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2b3684;
+  position: relative;
+}
+
+.category-divider {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #2b3684, #4958b9);
+  margin-bottom: 1.5rem;
+  border-radius: 2px;
+}
+
+/* Category Card */
+.category-link {
+  display: block;
+  text-decoration: none;
+}
+
+.category-card {
+  /* remove fixed dimensions */
+  width: 100%;
+  height: auto; /* was 300px */
+  overflow: visible; /* was hidden */
+}
+
+.category-link:hover .category-card {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(26, 36, 84, 0.2);
+}
+
+.category-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* changed from cover */
+}
+
+.category-link:hover .category-image {
+  transform: scale(1.05);
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* New Explorer Button */
+.explore-btn {
+  display: inline-block;
+  background-color: #2b3684;
+  color: white;
+  text-decoration: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(26, 36, 84, 0.3);
+}
+
+.explore-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+.explore-btn:hover {
+  color: white;
+  box-shadow: 0 6px 15px rgba(26, 36, 84, 0.4);
+  transform: translateY(-3px);
+}
+
+.explore-btn:hover::before {
+  left: 100%;
+}
+
+/* Decorative Elements */
+.decoration-shape {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.08;
+}
+
+.shape-1 {
+  top: -70px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50% 60% 40% 70%;
+  background: #fcd34d;
+  animation: floatAnimation 15s infinite alternate ease-in-out;
+}
+
+.shape-2 {
+  bottom: -30px;
+  left: -50px;
+  width: 180px;
+  height: 180px;
+  background: #4958b9;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation: spinAnimation 25s infinite linear;
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-10px, 15px) rotate(5deg);
+  }
+  100% {
+    transform: translate(10px, -15px) rotate(-5deg);
+  }
+}
+
+@keyframes spinAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Traditional Tunisian Pattern Overlay */
+.category-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a2454' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Add a specific class for the larger showcase image */
+.showcase-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  .category-row {
+    margin-bottom: 3rem;
+  }
+
+  .category-card {
+    height: 280px;
+    margin-bottom: 1.5rem;
+  }
+
+  .category-name {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .category-divider {
+    margin: 0 auto 1.5rem;
+  }
+
+  .explore-btn {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: 80%;
+  }
+}

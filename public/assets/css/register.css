@@ -1,0 +1,146 @@
+/* register.css - Custom styles for the registration page */
+
+/* Main container styling */
+.register-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Page title styling */
+.register-container h2 {
+  color: #2b3684;
+  font-weight: 600;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.register-container h2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #2b3684;
+}
+
+/* Form styling */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-control {
+  padding: 10px 12px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #2b3684;
+  box-shadow: 0 0 0 0.2rem rgba(43, 54, 132, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #2b3684;
+  border-color: #2b3684;
+  padding: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #232c6a;
+  border-color: #232c6a;
+  box-shadow: 0 5px 15px rgba(43, 54, 132, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Login link */
+.register-container a {
+  color: #2b3684;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.register-container a:hover {
+  text-decoration: underline;
+  color: #232c6a;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.alert-danger {
+  background-color: #fff2f2;
+  border-left: 4px solid #ff5252;
+  color: #d32f2f;
+}
+
+.alert-success {
+  background-color: #f0f8f0;
+  border-left: 4px solid #4caf50;
+  color: #2e7d32;
+}
+
+/* Required field indicator */
+.text-danger {
+  color: #e74c3c !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .register-container {
+    margin: 20px auto;
+    padding: 20px;
+  }
+}
+
+/* Animation for form elements */
+.form-control,
+.btn-primary {
+  transition: all 0.3s ease;
+}
+
+/* Custom placeholder color */
+::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+
+/* Add a subtle background pattern */
+body {
+  background-color: #f9f9f9;
+  background-image: linear-gradient(
+      rgba(43, 54, 132, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(43, 54, 132, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
