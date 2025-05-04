@@ -19,8 +19,8 @@ define('TEMPLATES_PATH', PUBLIC_PATH . '/templates');
 // Define URLs
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
 $domainName = $_SERVER['HTTP_HOST'];
-$basePath = '/E-souk-aziz/';
-define('ROOT_URL', 'http://localhost/E-souk-aziz/');
+$basePath = '/E-souk-main/';
+define('ROOT_URL', 'http://localhost/E-souk-main/');
 define('ASSETS_URL', ROOT_URL . 'public/assets/');
 define('UPLOADS_URL', ROOT_URL . 'public/root_uploads/');
 

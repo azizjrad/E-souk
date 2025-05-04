@@ -1,173 +1,179 @@
-/* E-Souk Tounsi Login Page Styles */
-
 /* Main color variables */
 :root {
-  --primary-color: #2b3684;
-  --primary-light: rgba(43, 54, 132, 0.05);
-  --primary-hover: #232b6a;
-  --primary-active: #1c2355;
-  --light-gray: #f9f9f9;
-  --white: #ffffff;
-  --text-dark: #333333;
-  --text-light: #666666;
-  --border-color: #e0e0e0;
-  --shadow-color: rgba(43, 54, 132, 0.1);
+  --old-primary-color: #2b3684;
+  --old-primary-light: rgba(43, 54, 132, 0.05);
+  --old-primary-hover: #232b6a;
+  --old-primary-active: #1c2355;
+  --old-light-gray: #f8f8f8;
+  --old-white: #ffffff;
+  --old-text-dark: #333333;
+  --old-text-light: #666666;
+  --old-border-color: #e0e0e0;
+  --old-shadow-color: rgba(43, 54, 132, 0.1);
 }
 
-/* Global styles */
-body {
-  background-color: #f9f9f9;
+/* Global login styles - scoped to avoid navbar conflicts */
+.login-body {
+  background-color: #f5f5f5;
   background-image: linear-gradient(
-      rgba(43, 54, 132, 0.05) 1px,
+      rgba(43, 54, 132, 0.03) 1px,
       transparent 1px
     ),
-    linear-gradient(90deg, rgba(43, 54, 132, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-  color: var(--text-dark);
-  font-family: "Poppins", sans-serif;
+    linear-gradient(90deg, rgba(43, 54, 132, 0.03) 1px, transparent 1px);
+  background-size: 25px 25px;
 }
 
 /* Login section styles */
-.container {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
+.login-container {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
-.card {
-  border-radius: 10px;
+.login-card {
+  border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: none !important;
+  border: none;
+  box-shadow: 0 10px 20px var(--old-shadow-color);
 }
 
-.card:hover {
+.login-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px var(--shadow-color) !important;
+  box-shadow: 0 15px 30px rgba(43, 54, 132, 0.15);
 }
 
-.card-body {
-  padding: 2rem !important;
+.login-card-body {
+  padding: 2.2rem;
 }
 
 /* Text and heading styles */
-h2.text-primary {
-  color: var(--primary-color) !important;
+.login-heading {
+  color: var(--old-primary-color);
   font-weight: 600;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1.8rem;
   position: relative;
+  text-align: center;
 }
 
-h2.text-primary:after {
+.login-heading:after {
   content: "";
   position: absolute;
-  bottom: -10px;
+  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50px;
+  width: 60px;
   height: 3px;
-  background-color: var(--primary-color);
+  background-color: var(--old-primary-color);
   border-radius: 3px;
 }
 
 /* Form elements */
-.form-control {
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  padding: 0.75rem 1rem;
+.login-form .form-control {
+  border: 1px solid var(--old-border-color);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
   font-size: 1rem;
   transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
-.form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.25rem rgba(43, 54, 132, 0.25);
+.login-form .form-control:focus {
+  border-color: var(--old-primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(43, 54, 132, 0.2);
+  background-color: #ffffff;
 }
 
-.form-label {
-  color: var(--text-light);
+.login-form .form-label {
+  color: var(--old-text-light);
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
 
 /* Buttons */
-.btn-primary {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  border-radius: 5px;
+.login-btn {
+  background-color: var(--old-primary-color);
+  border-color: var(--old-primary-color);
+  border-radius: 6px;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 6px rgba(43, 54, 132, 0.2);
+  box-shadow: 0 4px 8px rgba(43, 54, 132, 0.2);
+  color: white;
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-hover) !important;
-  border-color: var(--primary-hover) !important;
+.login-btn:hover,
+.btn.login-btn:hover {
+  background-color: var(--old-primary-hover);
+  border-color: var(--old-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(43, 54, 132, 0.3);
+  box-shadow: 0 6px 12px rgba(43, 54, 132, 0.3);
+  color: white !important; /* Force white text color on hover */
 }
 
-.btn-primary:active {
-  background-color: var(--primary-active) !important;
-  border-color: var(--primary-active) !important;
+.login-btn:active,
+.btn.login-btn:active {
+  background-color: var(--old-primary-active);
+  border-color: var(--old-primary-active);
   transform: translateY(0);
+  color: white !important;
 }
 
 /* Checkbox style */
-.form-check-input {
+.login-form .form-check-input {
   width: 1.1em;
   height: 1.1em;
   margin-top: 0.25em;
-  border-color: var(--primary-color);
+  border-color: var(--old-primary-color);
 }
 
-.form-check-input:checked {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+.login-form .form-check-input:checked {
+  background-color: var(--old-primary-color);
+  border-color: var(--old-primary-color);
 }
 
-.form-check-label {
-  color: var(--text-light);
+.login-form .form-check-label {
+  color: var(--old-text-light);
 }
 
 /* Links */
-a {
-  color: var(--primary-color);
+.login-links a {
+  color: var(--old-primary-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-a:hover {
-  color: var(--primary-hover);
+.login-links a:hover {
+  color: var(--old-primary-hover);
   text-decoration: underline;
 }
 
 /* Alert messages */
-.alert-danger {
+.login-alert {
   background-color: #fff0f0;
   color: #d32f2f;
   border-color: #ffcdd2;
   border-left: 4px solid #d32f2f;
   padding: 1rem;
-  border-radius: 5px;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .card-body {
-    padding: 1.5rem !important;
+  .login-card-body {
+    padding: 1.5rem;
   }
 
-  .container {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+  .login-container {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 }
 
 /* Add a subtle animation to the form */
-@keyframes fadeIn {
+@keyframes oldLoginFadeIn {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -178,6 +184,22 @@ a:hover {
   }
 }
 
-form {
-  animation: fadeIn 0.5s ease-out forwards;
+.login-form {
+  animation: oldLoginFadeIn 0.6s ease-out forwards;
+}
+
+/* Card background pattern */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  position: relative;
+}
+
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #2b3684, #3a49b8, #2b3684);
 }

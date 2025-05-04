@@ -174,7 +174,7 @@ $total = $subtotal + $shipping;
                             <?php foreach($_SESSION['cart'] as $id => $item): ?>
                                 <div class="d-flex flex-column flex-md-row align-items-center border-bottom pb-3 mb-3">
                                     <div class="flex-shrink-0 text-center mb-3 mb-md-0">
-                                        <img src="<?= !empty($item['image']) ? '../uploads/products/' . htmlspecialchars($item['image']) : 'https://via.placeholder.com/100x100?text=Produit' ?>" 
+                                        <img src="<?= !empty($item['image']) ? '../../root_uploads/products/' . htmlspecialchars($item['image']) : 'https://via.placeholder.com/100x100?text=Produit' ?>" 
                                              alt="<?= !empty($item['name']) ? htmlspecialchars($item['name']) : 'Produit' ?>" 
                                              class="img-fluid rounded" 
                                              style="width: 100px; height: 100px; object-fit: cover;">

@@ -18,8 +18,9 @@ require_once __DIR__ . '/../../config/init.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/components/navbar.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
     <link rel="stylesheet" href="../assets/css/components/Topbtn.css">
     <link rel="stylesheet" href="../assets/css/components/newsletter.css">
     <link rel="stylesheet" href="../assets/css/components/footer.css">

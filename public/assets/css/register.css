@@ -5,9 +5,31 @@
   max-width: 500px;
   margin: 30px auto;
   padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(43, 54, 132, 0.1);
   background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  overflow: hidden;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Add hover effect matching login.css */
+.register-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(43, 54, 132, 0.15);
+}
+
+/* Add blue gradient line at the top */
+.register-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #2b3684, #3a49b8, #2b3684);
 }
 
 /* Page title styling */
@@ -28,6 +50,7 @@
   width: 80px;
   height: 3px;
   background-color: #2b3684;
+  border-radius: 3px;
 }
 
 /* Form styling */

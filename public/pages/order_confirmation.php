@@ -13,7 +13,7 @@ if (!isset($_SESSION['order_success']) || !isset($_SESSION['order_id'])) {
 
 // Get order details
 $order_id = $_SESSION['order_id'];
-$stmt = $db->prepare("SELECT o.*, u.name, u.email, u.phone, u.address 
+$stmt = $db->prepare("SELECT o.*, u.name, u.email, u.phone, u.address
                      FROM orders o 
                      JOIN user u ON o.user_id = u.id_user 
                      WHERE o.id_order = ?");
@@ -236,7 +236,7 @@ unset($_SESSION['order_id']);
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="<?= !empty($item['image']) ? '../uploads/products/' . htmlspecialchars($item['image']) : '../assets/images/product-placeholder.jpg' ?>" 
+                                            <img src="<?= !empty($item['image']) ? '../../root_uploads/products/' . htmlspecialchars($item['image']) : '../assets/images/product-placeholder.jpg' ?>" 
                                                 alt="<?= htmlspecialchars($item['title']) ?>" width="50">
                                             <span><?= htmlspecialchars($item['title']) ?></span>
                                         </div>
@@ -252,7 +252,7 @@ unset($_SESSION['order_id']);
             </div>
             
             <div class="text-center mt-5">
-                <a href="index.php" class="btn btn-primary">
+                <a href="product.php" class="btn btn-primary">
                     <i class="fas fa-shopping-bag me-2"></i>Continuer vos achats
                 </a>
             </div>
@@ -262,3 +262,4 @@ unset($_SESSION['order_id']);
     <?php include '../templates/footer.php'; ?>
 </body>
 </html>
+``` 

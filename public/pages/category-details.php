@@ -57,10 +57,14 @@ if ($category['id_category'] > 0) {
     $priceRangeQuery = $db->prepare("SELECT MIN(price) as min_price, MAX(price) as max_price FROM product WHERE category_id = ?");
     $priceRangeQuery->execute([$category_id]);
     $priceRange = $priceRangeQuery->fetch(PDO::FETCH_ASSOC);
-    
-    if ($priceRange) {
+
+    if ($priceRange && $priceRange['min_price'] !== null && $priceRange['max_price'] !== null) {
         $priceMin = floor($priceRange['min_price']);
         $priceMax = ceil($priceRange['max_price']);
+    } else {
+        // Default values when no products exist
+        $priceMin = 0;
+        $priceMax = 1000;
     }
 
     // Apply filters
@@ -183,7 +187,7 @@ if (empty($featuredImages)) {
                             <?php if (!empty($featuredImages) && $featuredImages[0] != 'placeholder.jpg'): ?>
                             <div class="featured-images-grid">
                                 <?php foreach(array_slice($featuredImages, 0, 4) as $img): ?>
-                                <img src="../uploads/products/<?= htmlspecialchars($img) ?>" alt="Featured Product" class="img-fluid">
+                                <img src="../../root_uploads/products/<?= htmlspecialchars($img) ?>" alt="Featured Product" class="img-fluid">
                                 <?php endforeach; ?>
                             </div>
                             <?php endif; ?>
@@ -273,8 +277,8 @@ if (empty($featuredImages)) {
                                             
                                         </div>
                                         <div class="product-image">
-                                            <a href="product.php?id=<?= $product['id_product'] ?>">
-                                                <img src="../uploads/products/<?= htmlspecialchars($product['image'] ?: 'placeholder.jpg') ?>" 
+                                            <a href="product-detail.php?id=<?= $product['id_product'] ?>">
+                                                <img src="../../root_uploads/products/<?= htmlspecialchars($product['image'] ?: 'placeholder.jpg') ?>" 
                                                      alt="<?= htmlspecialchars($product['title']) ?>">
                                             </a>
                                             <?php if (isset($product['is_best_seller']) && $product['is_best_seller']): ?>
@@ -291,7 +295,7 @@ if (empty($featuredImages)) {
                                             </p>
                                             <div class="product-btn-container">
                                                 <button class="add-to-cart-btn" data-product-id="<?= $product['id_product'] ?>">
-                                                    <i class="far fa-shopping-cart"></i> Ajouter au panier
+                                                    <i class="fas fa-shopping-cart"></i> Ajouter au panier
                                                 </button>
                                             </div>
                                         </div>

@@ -19,7 +19,7 @@ if (empty($_SESSION['cart'])) {
 
 // Calculate totals
 $subtotal = 0;
-$shipping = 15; // Fixed shipping cost of 15 DT
+$shipping = 7; // Fixed shipping cost of 15 DT
 $item_count = 0;
 
 foreach ($_SESSION['cart'] as $product_id => $item) {
@@ -36,6 +36,7 @@ $user_id = $_SESSION['user_id'];
 $stmt = $db->prepare("SELECT * FROM user WHERE id_user = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +52,13 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <div class="checkout-container">
         <h1 class="text-center section-title">Finaliser la commande</h1>
         <hr class="mx-auto mb-5" style="width: 60px; border: 2px solid #fcd34d">
+
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger" style="max-width: 800px; margin: 0 auto 20px;">
+                <strong>Error:</strong> <?= $_SESSION['error']; ?>
+                <?php unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
         
         <div class="checkout-content">
             <div class="checkout-form-container">
@@ -74,21 +82,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                         
                         <div class="form-group">
                             <label for="address">Adresse</label>
-                            <input type="text" id="address" name="address" value="<?= htmlspecialchars($user['address'] ?? '') ?>" required>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="city">Ville</label>
-                                <input type="text" id="city" name="city" value="<?= htmlspecialchars($user['city'] ?? '') ?>" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="postal-code">Code postal</label>
-                                <input type="text" id="postal-code" name="postal_code" value="<?= htmlspecialchars($user['postal_code'] ?? '') ?>" required>
-                            </div>
-                        </div>
-                        
+                            <input type="text" id="address" name="address" value="<?= htmlspecialchars($user['address'] ?? '') ?>" >
+                        </div>                      
                         <div class="form-group">
                             <label for="country">Pays</label>
                             <select id="country" name="country" required>
@@ -148,7 +143,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="order-items">
                     <?php foreach($_SESSION['cart'] as $id => $item): ?>
                         <div class="order-item">
-                            <img src="<?= !empty($item['image']) ? '../uploads/products/' . htmlspecialchars($item['image']) : '../assets/images/product-placeholder.jpg' ?>" 
+                            <img src="<?= !empty($item['image']) ? '../../root_uploads/products/' . htmlspecialchars($item['image']) : '../assets/images/product-placeholder.jpg' ?>" 
                                 alt="<?= htmlspecialchars($item['name'] ?? '') ?>">
                             <div class="item-details">
                                 <h3><?= htmlspecialchars($item['name'] ?? '') ?></h3>
@@ -201,3 +196,4 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <?php include '../templates/footer.php'; ?>
 </body>
 </html>
+``` 
