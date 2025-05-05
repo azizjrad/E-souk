@@ -1,8 +1,8 @@
 <?php
-// Initialize the session
+// Initialiser la session
 session_start();
 require_once "../config/init.php";
-// Check if the user is logged in and has admin privileges
+// Vérifier si l'utilisateur est connecté et a des privilèges d'administrateur
 if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "admin") {
     header("location: login.php");
     exit;
@@ -11,7 +11,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "admin") {
 
 $conn = Database::getInstance();
 
-// Process add user operation
+// Traiter l'opération d'ajout d'utilisateur
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "add_user") {
     $name = trim($_POST["name"]);
     $email = trim($_POST["email"]);
@@ -20,21 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     $address = trim($_POST["address"] ?? "");
     $phone = trim($_POST["phone"] ?? "");
     
-    // Validate inputs
+    // Valider les entrées
     $errors = [];
-    if (empty($name)) $errors[] = "Name is required";
-    if (empty($email)) $errors[] = "Email is required";
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format";
-    if (empty($password)) $errors[] = "Password is required";
-    elseif (strlen($password) < 6) $errors[] = "Password must be at least 6 characters";
-    if (empty($role)) $errors[] = "Role is required";
+    if (empty($name)) $errors[] = "Le nom est requis";
+    if (empty($email)) $errors[] = "L'email est requis";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format d'email invalide";
+    if (empty($password)) $errors[] = "Le mot de passe est requis";
+    elseif (strlen($password) < 6) $errors[] = "Le mot de passe doit contenir au moins 6 caractères";
+    if (empty($role)) $errors[] = "Le rôle est requis";
     
-    // Check if email already exists
+    // Vérifier si l'email existe déjà
     $checkStmt = $conn->prepare("SELECT id_user FROM user WHERE email = ?");
     $checkStmt->bindParam(1, $email, PDO::PARAM_STR);
     $checkStmt->execute();
     if ($checkStmt->rowCount() > 0) {
-        $errors[] = "Email already exists";
+        $errors[] = "Cet email existe déjà";
     }
     
     if (empty($errors)) {
@@ -49,9 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
         $stmt->bindParam(6, $phone, PDO::PARAM_STR);
         
         if ($stmt->execute()) {
-            $_SESSION["success_msg"] = "User added successfully";
+            $_SESSION["success_msg"] = "Utilisateur ajouté avec succès";
         } else {
-            $_SESSION["error_msg"] = "Something went wrong. Please try again later.";
+            $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
         }
         
         header("location: users.php");
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     }
 }
 
-// Process edit user operation
+// Traiter l'opération de modification d'utilisateur
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "edit_user") {
     $id = trim($_POST["id_user"]);
     $name = trim($_POST["name"]);
@@ -71,20 +71,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     $phone = trim($_POST["phone"] ?? "");
     $password = trim($_POST["password"] ?? "");
     
-    // Validate inputs
+    // Valider les entrées
     $errors = [];
-    if (empty($name)) $errors[] = "Name is required";
-    if (empty($email)) $errors[] = "Email is required";
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format";
-    if (empty($role)) $errors[] = "Role is required";
+    if (empty($name)) $errors[] = "Le nom est requis";
+    if (empty($email)) $errors[] = "L'email est requis";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format d'email invalide";
+    if (empty($role)) $errors[] = "Le rôle est requis";
     
-    // Check if email already exists for other users
+    // Vérifier si l'email existe déjà pour d'autres utilisateurs
     $checkStmt = $conn->prepare("SELECT id_user FROM user WHERE email = ? AND id_user != ?");
     $checkStmt->bindParam(1, $email, PDO::PARAM_STR);
     $checkStmt->bindParam(2, $id, PDO::PARAM_INT);
     $checkStmt->execute();
     if ($checkStmt->rowCount() > 0) {
-        $errors[] = "Email already exists";
+        $errors[] = "Cet email existe déjà";
     }
     
     if (empty($errors)) {
@@ -111,9 +111,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
         }
         
         if ($stmt->execute()) {
-            $_SESSION["success_msg"] = "User updated successfully";
+            $_SESSION["success_msg"] = "Utilisateur mis à jour avec succès";
         } else {
-            $_SESSION["error_msg"] = "Something went wrong. Please try again later.";
+            $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
         }
         
         header("location: users.php");
@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     }
 }
 
-// Process delete operation
+// Traiter l'opération de suppression
 if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"])) {
     $id = trim($_GET["id"]);
     $sql = "DELETE FROM user WHERE id_user = ?";
@@ -132,9 +132,9 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"]))
     $stmt->bindParam(1, $id, PDO::PARAM_INT);
     
     if ($stmt->execute()) {
-        $_SESSION["success_msg"] = "User deleted successfully";
+        $_SESSION["success_msg"] = "Utilisateur supprimé avec succès";
     } else {
-        $_SESSION["error_msg"] = "Something went wrong. Please try again later.";
+        $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
     }
     
     header("location: users.php");
@@ -142,24 +142,24 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"]))
 }
 
 try {
-    // Fetch all users with PDO
+    // Récupérer tous les utilisateurs avec PDO
     $sql = "SELECT id_user, name, email, role, address, phone, created_at FROM user ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $_SESSION["error_msg"] = "Database error: " . $e->getMessage();
+    $_SESSION["error_msg"] = "Erreur de base de données: " . $e->getMessage();
     $users = [];
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-<!-- Head section remains the same -->
+<html lang="fr">
+<!-- La section head reste la même -->
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management - Admin Panel</title>
+    <title>Gestion des Utilisateurs - Panneau d'Administration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/admin.css">
@@ -171,14 +171,14 @@ try {
     
     <div class="container-fluid">
         <div class="row">
-            <!-- Missing sidebar here -->
+            <!-- Barre latérale manquante ici -->
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
-                <h2>User Management</h2>
+                <h2>Gestion des Utilisateurs</h2>
                 
                 <?php if (isset($_SESSION["success_msg"])): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <?= $_SESSION["success_msg"] ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                     </div>
                     <?php unset($_SESSION["success_msg"]); ?>
                 <?php endif; ?>
@@ -186,23 +186,23 @@ try {
                 <?php if (isset($_SESSION["error_msg"])): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?= $_SESSION["error_msg"] ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                     </div>
                     <?php unset($_SESSION["error_msg"]); ?>
                 <?php endif; ?>
                 
                 <div class="d-flex justify-content-between mb-3">
-                    <p>Manage system users</p>
+                    <p>Gérer les utilisateurs du système</p>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="fas fa-plus"></i> Add New User
+                        <i class="fas fa-plus"></i> Ajouter un Nouvel Utilisateur
                     </button>
                 </div>
                 
-                <!-- Table structure updated -->
+                <!-- Structure du tableau mise à jour -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Users List
+                        Liste des Utilisateurs
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -210,12 +210,12 @@ try {
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>Nom</th>
                                         <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Address</th>
-                                        <th>Phone</th>
-                                        <th>Created At</th>
+                                        <th>Rôle</th>
+                                        <th>Adresse</th>
+                                        <th>Téléphone</th>
+                                        <th>Créé le</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -228,19 +228,19 @@ try {
                                             <td><?= htmlspecialchars($row["email"]) ?></td>
                                             <td>
                                                 <span class="badge bg-<?= $row["role"] == "admin" ? "danger" : "info" ?>">
-                                                    <?= ucfirst(htmlspecialchars($row["role"])) ?>
+                                                    <?= $row["role"] == "admin" ? "Admin" : "Utilisateur" ?>
                                                 </span>
                                             </td>
                                             <td><?= htmlspecialchars($row["address"] ?? '') ?></td>
                                             <td><?= htmlspecialchars($row["phone"] ?? '') ?></td>
-                                            <td><?= $row["created_at"] ?></td>
+                                            <td><?= date('d/m/Y H:i', strtotime($row["created_at"])) ?></td>
                                             <td>
                                                 <button class="btn btn-sm btn-primary" onclick="editUser(<?= $row['id_user'] ?>, '<?= addslashes($row['name']) ?>', '<?= addslashes($row['email']) ?>', '<?= $row['role'] ?>', '<?= addslashes($row['address'] ?? '') ?>', '<?= addslashes($row['phone'] ?? '') ?>')">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <a href="users.php?action=delete&id=<?= $row["id_user"] ?>" 
                                                    class="btn btn-sm btn-danger" 
-                                                   onclick="return confirm('Are you sure you want to delete this user?')">
+                                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -248,7 +248,7 @@ try {
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="8" class="text-center">No users found</td>
+                                            <td colspan="8" class="text-center">Aucun utilisateur trouvé</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -260,20 +260,20 @@ try {
         </div>
     </div>
     
-    <!-- Add User Modal -->
+    <!-- Modal d'ajout d'utilisateur -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="addUserModalLabel">Ajouter un Nouvel Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <form action="users.php" method="post">
                     <input type="hidden" name="action" value="add_user">
                     <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Nom</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="col-md-6">
@@ -283,45 +283,45 @@ try {
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Mot de passe</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="role" class="form-label">Role</label>
+                                <label for="role" class="form-label">Rôle</label>
                                 <select class="form-select" id="role" name="role" required>
-                                    <option value="">Select Role</option>
+                                    <option value="">Sélectionner un Rôle</option>
                                     <option value="admin">Admin</option>
-                                    <option value="user">User</option>
+                                    <option value="user">Utilisateur</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="address" class="form-label">Address</label>
+                                <label for="address" class="form-label">Adresse</label>
                                 <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                             </div>
                             <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone</label>
+                                <label for="phone" class="form-label">Téléphone</label>
                                 <input type="text" class="form-control" id="phone" name="phone">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add User</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Ajouter l'Utilisateur</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Edit User Modal -->
+    <!-- Modal de modification d'utilisateur -->
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="editUserModalLabel">Modifier l'Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <form action="users.php" method="post">
                     <input type="hidden" name="action" value="edit_user">
@@ -329,7 +329,7 @@ try {
                     <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="edit_name" class="form-label">Name</label>
+                                <label for="edit_name" class="form-label">Nom</label>
                                 <input type="text" class="form-control" id="edit_name" name="name" required>
                             </div>
                             <div class="col-md-6">
@@ -339,32 +339,32 @@ try {
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="edit_password" class="form-label">Password (Leave blank to keep current)</label>
+                                <label for="edit_password" class="form-label">Mot de passe (Laisser vide pour conserver l'actuel)</label>
                                 <input type="password" class="form-control" id="edit_password" name="password">
                             </div>
                             <div class="col-md-6">
-                                <label for="edit_role" class="form-label">Role</label>
+                                <label for="edit_role" class="form-label">Rôle</label>
                                 <select class="form-select" id="edit_role" name="role" required>
-                                    <option value="">Select Role</option>
+                                    <option value="">Sélectionner un Rôle</option>
                                     <option value="admin">Admin</option>
-                                    <option value="user">User</option>
+                                    <option value="user">Utilisateur</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="edit_address" class="form-label">Address</label>
+                                <label for="edit_address" class="form-label">Adresse</label>
                                 <textarea class="form-control" id="edit_address" name="address" rows="3"></textarea>
                             </div>
                             <div class="col-md-6">
-                                <label for="edit_phone" class="form-label">Phone</label>
+                                <label for="edit_phone" class="form-label">Téléphone</label>
                                 <input type="text" class="form-control" id="edit_phone" name="phone">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update User</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Mettre à jour l'Utilisateur</button>
                     </div>
                 </form>
             </div>
@@ -377,11 +377,15 @@ try {
    
     <script>
         $(document).ready(function() {
-            $('#usersTable').DataTable();
+            $('#usersTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+                }
+            });
         });
         
         function editUser(id, name, email, role, address, phone) {
-            // Set values in the edit modal
+            // Définir les valeurs dans le modal de modification
             document.getElementById('edit_id_user').value = id;
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_email').value = email;
@@ -389,10 +393,10 @@ try {
             document.getElementById('edit_address').value = address || '';
             document.getElementById('edit_phone').value = phone || '';
             
-            // Clear password field
+            // Effacer le champ de mot de passe
             document.getElementById('edit_password').value = '';
             
-            // Show the modal
+            // Afficher le modal
             var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
             editModal.show();
         }

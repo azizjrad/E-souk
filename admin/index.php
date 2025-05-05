@@ -15,27 +15,27 @@ $stmt = $db->prepare("SELECT COUNT(*) as total FROM product");
 $stmt->execute();
 $totalProducts = $stmt->fetchColumn();
 
-// Total orders
+// Commandes totales
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM orders");
 $stmt->execute();
 $totalOrders = $stmt->fetchColumn();
 
-// Pending orders
+// Commandes en attente
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM orders WHERE status = 'Pending'");
 $stmt->execute();
 $pendingOrders = $stmt->fetchColumn();
 
-// Total customers
+// Clients totaux
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM user WHERE role = 'customer'");
 $stmt->execute();
 $totalCustomers = $stmt->fetchColumn();
 
-// Total sales amount
+// Montant total des ventes
 $stmt = $db->prepare("SELECT COALESCE(SUM(total_price), 0) as total_sales FROM orders WHERE status != 'Cancelled'");
 $stmt->execute();
 $totalSales = $stmt->fetchColumn();
 
-// Recent orders
+// Commandes récentes
 $stmt = $db->prepare("SELECT o.id_order as order_id, o.order_date, o.status, 
                        u.name as customer_name, o.total_price as total_amount 
                        FROM orders o 
@@ -148,17 +148,36 @@ $recentOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <tr>
                                             <td>#<?php echo $order['order_id']; ?></td>
                                             <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
-                                            <td><?php echo date('M d, Y', strtotime($order['order_date'])); ?></td>
+                                            <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
                                             <td><?php echo number_format($order['total_amount'], 2); ?> DT</td>
                                             <td>
                                                 <?php 
                                                 $statusClass = 'secondary';
-                                                if (strtolower($order['status']) == 'pending') $statusClass = 'warning';
-                                                if (strtolower($order['status']) == 'completed') $statusClass = 'success';
-                                                if (strtolower($order['status']) == 'cancelled') $statusClass = 'danger';
+                                                // Translate status for display
+                                                $displayStatus = $order['status'];
+                                                if (strtolower($order['status']) == 'pending') {
+                                                    $statusClass = 'warning';
+                                                    $displayStatus = 'En attente';
+                                                }
+                                                if (strtolower($order['status']) == 'completed') {
+                                                    $statusClass = 'success';
+                                                    $displayStatus = 'Terminée';
+                                                }
+                                                if (strtolower($order['status']) == 'cancelled') {
+                                                    $statusClass = 'danger';
+                                                    $displayStatus = 'Annulée';
+                                                }
+                                                if (strtolower($order['status']) == 'processing') {
+                                                    $statusClass = 'info';
+                                                    $displayStatus = 'En traitement';
+                                                }
+                                                if (strtolower($order['status']) == 'shipped') {
+                                                    $statusClass = 'primary';
+                                                    $displayStatus = 'Expédiée';
+                                                }
                                                 ?>
                                                 <span class="badge bg-<?php echo $statusClass; ?>">
-                                                    <?php echo $order['status']; ?>
+                                                    <?php echo $displayStatus; ?>
                                                 </span>
                                             </td>
                                             <td>

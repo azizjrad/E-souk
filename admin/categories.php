@@ -33,9 +33,9 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
             $image_path = $upload_dir . $category['image'];
             if (file_exists($image_path)) unlink($image_path);
         }
-        $_SESSION['success'] = "Category deleted successfully";
+        $_SESSION['success'] = "Catégorie supprimée avec succès";
     } else {
-        $_SESSION['error'] = "Error deleting category";
+        $_SESSION['error'] = "Erreur lors de la suppression de la catégorie";
     }
     header('Location: categories.php');
     exit();
@@ -72,12 +72,12 @@ if (isset($_POST['submit'])) {
                     }
                 }
             } else {
-                $_SESSION['error'] = "Failed to upload image";
+                $_SESSION['error'] = "Échec de téléchargement de l'image";
                 header('Location: categories.php');
                 exit();
             }
         } else {
-            $_SESSION['error'] = "Invalid file type. Only JPG, JPEG, PNG and GIF files are allowed.";
+            $_SESSION['error'] = "Type de fichier non valide. Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
             header('Location: categories.php');
             exit();
         }
@@ -87,25 +87,25 @@ if (isset($_POST['submit'])) {
     if ($edit_id) {
         // Update existing category
         if ($image_name) {
-            $sql = "UPDATE category SET name = ?, discription = ?, image = ? WHERE id_category = ?";
+            $sql = "UPDATE category SET name = ?, description = ?, image = ? WHERE id_category = ?";
             $params = [$category_name, $category_description, $image_name, $edit_id];
         } else {
-            $sql = "UPDATE category SET name = ?, discription = ? WHERE id_category = ?";
+            $sql = "UPDATE category SET name = ?, description = ? WHERE id_category = ?";
             $params = [$category_name, $category_description, $edit_id];
         }
-        $success_msg = "Category updated successfully";
+        $success_msg = "Catégorie mise à jour avec succès";
     } else {
         // Add new category
-        $sql = "INSERT INTO category (name, discription, image) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO category (name, description, image) VALUES (?, ?, ?)";
         $params = [$category_name, $category_description, $image_name];
-        $success_msg = "Category added successfully";
+        $success_msg = "Catégorie ajoutée avec succès";
     }
     
     $stmt = $db->prepare($sql);
     if ($stmt->execute($params)) {
         $_SESSION['success'] = $success_msg;
     } else {
-        $_SESSION['error'] = "Error: " . implode(", ", $stmt->errorInfo());
+        $_SESSION['error'] = "Erreur: " . implode(", ", $stmt->errorInfo());
     }
     header('Location: categories.php');
     exit();
@@ -137,7 +137,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Manage Categories</h1>
+                    <h1 class="h2">Gérer les Catégories</h1>
                 </div>
                 
                 <?php if (isset($_SESSION['success'])): ?>
@@ -162,7 +162,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="col-md-5 mb-4">
                         <div class="card">
                             <div class="card-header">
-                                <?php echo $edit_category ? 'Edit Category' : 'Add New Category'; ?>
+                                <?php echo $edit_category ? 'Modifier Catégorie' : 'Ajouter une Nouvelle Catégorie'; ?>
                             </div>
                             <div class="card-body">
                                 <form method="post" action="" enctype="multipart/form-data">
@@ -171,7 +171,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php endif; ?>
                                     
                                     <div class="mb-3">
-                                        <label for="category_name" class="form-label">Category Name</label>
+                                        <label for="category_name" class="form-label">Nom de Catégorie</label>
                                         <input type="text" class="form-control" id="category_name" name="category_name" 
                                             value="<?php echo $edit_category ? htmlspecialchars($edit_category['name']) : ''; ?>" required>
                                     </div>
@@ -180,25 +180,25 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="mb-3">
                                         <label for="category_description" class="form-label">Description</label>
                                         <textarea class="form-control" id="category_description" name="category_description" 
-                                            rows="3"><?php echo $edit_category && isset($edit_category['discription']) ? htmlspecialchars($edit_category['discription']) : ''; ?></textarea>
+                                            rows="3"><?php echo $edit_category && isset($edit_category['description']) ? htmlspecialchars($edit_category['description']) : ''; ?></textarea>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="category_image" class="form-label">Category Image</label>
+                                        <label for="category_image" class="form-label">Image de Catégorie</label>
                                         <input type="file" class="form-control" id="category_image" name="category_image">
-                                        <small class="form-text text-muted">Allowed formats: JPG, JPEG, PNG, GIF</small>
+                                        <small class="form-text text-muted">Formats autorisés: JPG, JPEG, PNG, GIF</small>
                                         <?php if ($edit_category && !empty($edit_category['image'])): ?>
                                             <div class="mt-2">
-                                                <p>Current Image:</p>
-                                                <img src="<?php echo $upload_dir . $edit_category['image']; ?>" alt="Category Image" class="img-thumbnail" style="max-width: 150px;">
+                                                <p>Image actuelle:</p>
+                                                <img src="<?php echo $upload_dir . $edit_category['image']; ?>" alt="Image de Catégorie" class="img-thumbnail" style="max-width: 150px;">
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                     
-                                    <button type="submit" name="submit" class="btn btn-primary"><?php echo $edit_category ? 'Update Category' : 'Add Category'; ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary"><?php echo $edit_category ? 'Mettre à jour la Catégorie' : 'Ajouter la Catégorie'; ?></button>
                                     
                                     <?php if ($edit_category): ?>
-                                        <a href="categories.php" class="btn btn-secondary">Cancel</a>
+                                        <a href="categories.php" class="btn btn-secondary">Annuler</a>
                                     <?php endif; ?>
                                 </form>
                             </div>
@@ -208,7 +208,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="col-md-7">
                         <div class="card">
                             <div class="card-header">
-                                Categories List
+                                Liste des Catégories
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -217,7 +217,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Image</th>
-                                                <th>Name</th>
+                                                <th>Nom</th>
                                                 <th>Description</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -233,20 +233,20 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <td><?php echo $row['id_category']; ?></td>
                                                     <td>
                                                         <?php if (!empty($row['image'])): ?>
-                                                            <img src="<?php echo $upload_dir . $row['image']; ?>" alt="Category" class="img-thumbnail" style="max-width: 50px; max-height: 50px;">
+                                                            <img src="<?php echo $upload_dir . $row['image']; ?>" alt="Catégorie" class="img-thumbnail" style="max-width: 50px; max-height: 50px;">
                                                         <?php else: ?>
-                                                            <span class="text-muted">No image</span>
+                                                            <span class="text-muted">Pas d'image</span>
                                                         <?php endif; ?>
                                                     </td>
                                                     <td><?php echo htmlspecialchars($row['name']); ?></td>
                                                     <td><?php 
-                                                    $content = isset($row['discription']) ? $row['discription'] : '';
+                                                    $content = isset($row['description']) ? $row['description'] : '';
                                                     // Display the content with truncation if needed
                                                     echo htmlspecialchars(substr($content, 0, 50)) . (strlen($content) > 50 ? '...' : '');
                                                 ?></td>
                                                     <td>
-                                                        <a href="categories.php?edit_id=<?php echo $row['id_category']; ?>" class="btn btn-sm btn-primary">Edit</a>
-                                                        <a href="categories.php?delete_id=<?php echo $row['id_category']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+                                                        <a href="categories.php?edit_id=<?php echo $row['id_category']; ?>" class="btn btn-sm btn-primary">Modifier</a>
+                                                        <a href="categories.php?delete_id=<?php echo $row['id_category']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie?')">Supprimer</a>
                                                     </td>
                                                 </tr>
                                             <?php 
@@ -254,7 +254,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             else: 
                                             ?>
                                                 <tr>
-                                                    <td colspan="6" class="text-center">No categories found</td>
+                                                    <td colspan="6" class="text-center">Aucune catégorie trouvée</td>
                                                 </tr>
                                             <?php endif; ?>
                                         </tbody>

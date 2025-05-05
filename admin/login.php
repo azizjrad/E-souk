@@ -10,7 +10,7 @@ if(isset($_POST['login'])) {
     
     // Validate input
     if(empty($email) || empty($password)) {
-        $error = "Please enter both email and password";
+        $error = "Veuillez saisir l'email et le mot de passe";
     } else {
         try {
             $stmt = $db->prepare("SELECT * FROM user WHERE email = ? AND role = 'admin'");
@@ -26,10 +26,10 @@ if(isset($_POST['login'])) {
                 header("Location: index.php");
                 exit();
             } else {
-                $error = "Invalid email or password";
+                $error = "Email ou mot de passe invalide";
             }
         } catch(PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
+            $error = "Erreur de base de données: " . $e->getMessage();
         }
     }
 }
@@ -40,7 +40,7 @@ if(isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard | E-Souk</title>
+    <title>Tableau de Bord Admin | E-Souk</title>
     <meta name="description" content="Panneau d'administration pour la plateforme E-Souk d'artisanat tunisien.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -105,13 +105,13 @@ if(isset($_POST['login'])) {
                     <div class="card-body p-5">
                         <div class="logo-area">
                             <h2>E-Souk</h2>
-                            <p class="text-muted">Admin Panel</p>
+                            <p class="text-muted">Panneau d'Administration</p>
                         </div>
                         
                         <?php if($error): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                             </div>
                         <?php endif; ?>
                         
@@ -120,22 +120,22 @@ if(isset($_POST['login'])) {
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" 
                                              placeholder="admin@e-souk.com" required autocomplete="email">
-                                <div class="invalid-feedback">Please enter a valid email address</div>
+                                <div class="invalid-feedback">Veuillez entrer une adresse email valide</div>
                             </div>
                             
                             <div class="mb-4">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Mot de passe</label>
                                 <div class="password-field">
                                     <input type="password" class="form-control" id="password" name="password" 
                                                  required autocomplete="current-password">
                                     <i class="toggle-password fas fa-eye-slash" onclick="togglePassword()"></i>
-                                    <div class="invalid-feedback">Password is required</div>
+                                    <div class="invalid-feedback">Le mot de passe est requis</div>
                                 </div>
                             </div>
                             
                             <div class="d-grid">
                                 <button type="submit" name="login" class="btn btn-primary">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                    <i class="fas fa-sign-in-alt me-2"></i>Connexion
                                 </button>
                             </div>
                         </form>
@@ -144,7 +144,7 @@ if(isset($_POST['login'])) {
                             <a href="../public/pages/index.php" 
                                target="_blank"
                             class="text-decoration-none text-muted">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Home
+                                <i class="fas fa-arrow-left me-2"></i>Retour à l'Accueil
                             </a>
                         </div>
                     </div>
@@ -154,6 +154,37 @@ if(isset($_POST['login'])) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.toggle-password');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+        
+        // Bootstrap form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
 </body>
 </html>
