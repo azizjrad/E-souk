@@ -1,5 +1,7 @@
 # E-Souk Tounsi
 
+[![Accéder au site en ligne](https://img.shields.io/badge/DEMO-Visiter%20E--Souk%20Tounsi-blue?style=for-the-badge&logo=google-chrome)](https://esouk-tounsi.ct.ws/public/pages/index.php)
+
 ![E-Souk Logo](public/assets/images/logo.png)
 
 ## 🌍 Présentation
@@ -84,7 +86,7 @@
 
 ## 📸 Aperçu
 
-![Aperçu](public/assets/images/featured-product.png)
+![Aperçu](public/assets/images/hero-image.png)
 
 ---
 

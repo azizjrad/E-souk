@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../config/init.php';
-
+// Add proper content type header at the top
 header('Content-Type: application/json');
+require_once __DIR__ . '/../../config/init.php';
 
 // Check if request is AJAX
 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
@@ -17,8 +17,12 @@ $response = [
 
 // Make sure user is logged in
 if (!isset($_SESSION['user_id'])) {
-    $response['message'] = 'Vous devez être connecté pour gérer vos favoris';
-    echo json_encode($response);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Vous devez être connecté pour gérer vos favoris',
+        'authenticated' => false,
+        'requiresAuth' => true  // Add this field for consistency with JS
+    ]);
     exit;
 }
 

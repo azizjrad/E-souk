@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/init.php';
 
-$title = "E-Souk Tounsi - Artisanat Tunisien";
+$page_title = "Connexion - Artisanat Tunisien";
 $description = "Découvrez l'artisanat tunisien de qualité, des produits faits main par nos artisans locaux.";
 
 // Process login form submission
@@ -58,30 +58,27 @@ if (isset($_POST['login_submit'])) {
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <?php include ROOT_PATH . '/public/templates/header.php'; ?>
-    <link rel="stylesheet" href="../assets/css/login.css">
-  </head>
-  <body>
+   <?php include ROOT_PATH . '/public/templates/header.php'; ?>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="<?php echo str_replace('http:', '', ROOT_URL); ?>public/assets/css/login.css">
     
-    <!-- Navbar -->
+  </head>
+  <body class="login-body">
     <?php include ROOT_PATH . '/public/templates/navbar.php'; ?>
 
     <!-- Login Section -->
-    <section class="container my-5 py-5">
+    <section class="container login-container my-5 py-4">
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body p-4">
-              <h2 class="mb-4 text-center text-primary">Connexion</h2>
+          <div class="card login-card border-0">
+            <div class="card-body login-card-body">
+              <h2 class="login-heading">Connexion</h2>
               
-              <?php
-              // Display error message if any
-              if (isset($error)) {
-                echo '<div class="alert alert-danger">' . $error . '</div>';
-              }
-              ?>
+              <?php if (isset($error)): ?>
+                <div class="login-alert"><?php echo $error; ?></div>
+              <?php endif; ?>
 
-              <form action="<?php echo htmlspecialchars(ROOT_URL . 'public/user/login.php'); ?>" method="POST">
+              <form class="login-form" action="<?php echo htmlspecialchars(ROOT_URL . 'public/user/login.php'); ?>" method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">Adresse Email</label>
                   <input
@@ -114,17 +111,17 @@ if (isset($_POST['login_submit'])) {
                   />
                   <label class="form-check-label" for="remember">Se souvenir de moi</label>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" name="login_submit">
+                <button type="submit" class="btn login-btn w-100" name="login_submit">
                   Se connecter
                 </button>
               </form>
 
-              <div class="text-center mt-3">
+              <div class="login-links text-center mt-3">
                 <a href="<?php echo ROOT_URL; ?>public/user/reset_password.php">Mot de passe oublié ?</a>
-              </div>
-              <div class="text-center mt-2">
-                <span>Vous n'avez pas de compte ?
-                <a href="<?php echo ROOT_URL; ?>public/user/register.php">Créer un compte</a> </span>
+                <div class="mt-2">
+                  <span>Vous n'avez pas de compte?
+                  <a href="<?php echo ROOT_URL; ?>public/user/register.php">Créer un compte</a></span>
+                </div>
               </div>
             </div>
           </div>

@@ -31,6 +31,9 @@ try {
     echo "Erreur : " . $e->getMessage();
     exit();
 }
+$page_title = "Mes Commandes - E-Souk Tounsi";
+$description = "Consultez vos commandes passées, suivez leur statut et gérez vos achats sur E-Souk Tounsi.";
+
 ?>
 
 <!DOCTYPE html>

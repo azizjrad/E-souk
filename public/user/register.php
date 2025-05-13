@@ -54,6 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+$page_title = "Inscription - Artisanat Tunisien";
+$description = "Inscrivez-vous pour découvrir l'artisanat tunisien de qualité, des produits faits main par nos artisans locaux.";
 ?>
 
 <!DOCTYPE html>

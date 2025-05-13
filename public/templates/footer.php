@@ -1,6 +1,6 @@
 <footer class="bg-dark text-white py-4">
     <div class="container">
-        <div class="row">
+        <div class="row gy-3">
             <!-- Logo et description -->
             <div class="col-md-3 mb-3 text-center text-md-start">
                 <img src="../assets/images/logo.png" alt="E-Souk Logo" height="40">
@@ -48,11 +48,11 @@
             <!-- Réseaux sociaux -->
             <div class="col-md-3 mb-3 text-center text-md-end">
                 <h5 class="text-uppercase mb-3">Suivez-nous</h5>
-                <div class="social-icons mb-3">
-                    <a href="https://instagram.com" class="text-white me-3" target="_blank" aria-label="Instagram">
+                <div class="social-icons">
+                    <a href="https://instagram.com" class="text-white" target="_blank" aria-label="Instagram">
                         <i class="fab fa-instagram fa-lg"></i>
                     </a>
-                    <a href="https://facebook.com" class="text-white me-3" target="_blank" aria-label="Facebook">
+                    <a href="https://facebook.com" class="text-white" target="_blank" aria-label="Facebook">
                         <i class="fab fa-facebook-f fa-lg"></i>
                     </a>
                     <a href="https://pinterest.com" class="text-white" target="_blank" aria-label="Pinterest">

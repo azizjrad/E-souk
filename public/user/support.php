@@ -90,6 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_ticket'])) {
         }
     }
 }
+$page_title = "Service Client - E-Souk Tounsi";
+$description = "Centre d'assistance pour les clients d'E-Souk Tounsi. Obtenez de l'aide pour vos commandes, produits et compte.";
 ?>
 
 <!DOCTYPE html>

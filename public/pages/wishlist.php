@@ -1,14 +1,14 @@
 <?php
 require_once __DIR__ . '/../../config/init.php';
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page
-    header('Location: login.php?redirect=wishlist.php');
+    header('Location: ../user/login.php');
     exit;
 }
-
 $user_id = $_SESSION['user_id'];
+
 
 // Get wishlist products from database
 $wishlisted_products = [];

@@ -39,7 +39,7 @@ $productsArray = $productsQuery->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="col-lg-6 position-relative z-2 d-none d-lg-block">
                     <div class="hero-featured-product">
-                        <img src="../assets/images/featured-product.png" alt="Produit artisanal mis en avant" class="img-fluid rounded-lg shadow-lg">
+                        <img src="../assets/images/hero-image.png" alt="Produit artisanal mis en avant" class="img-fluid rounded-lg shadow-lg">
                         <div class="hero-badge">
                             <span>Nouveauté</span>
                         </div>
@@ -92,9 +92,9 @@ $productsArray = $productsQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="category-container">
             <?php
             $categories = [
-                ['id' => 1, 'name' => 'Accessories', 'image' => 'Accessories.jpg', 'desc' => 'Découvrez notre collection d\'accessoires artisanaux.'],
-                ['id' => 2, 'name' => 'Rugs & Kilim', 'image' => 'klim.jpg', 'desc' => 'Explorez nos tapis et kilims traditionnels faits à la main.'],
-                ['id' => 3, 'name' => 'Handcrafted Ceramics', 'image' => 'Handcrafted-ceramic.jpg', 'desc' => 'Découvrez notre collection de céramiques artisanales tunisiennes faites à la main.']
+                ['id' => 3, 'name' => 'Accessories', 'image' => 'Accessories.jpg', 'desc' => 'Découvrez notre collection d\'accessoires artisanaux.'],
+                ['id' => 1, 'name' => 'Rugs & Kilim', 'image' => 'klim.jpg', 'desc' => 'Explorez nos tapis et kilims traditionnels faits à la main.'],
+                ['id' => 6, 'name' => 'Handcrafted Ceramics', 'image' => 'Handcrafted-ceramic.jpg', 'desc' => 'Découvrez notre collection de céramiques artisanales tunisiennes faites à la main.']
             ];
 
             foreach ($categories as $index => $category):
@@ -177,5 +177,6 @@ $productsArray = $productsQuery->fetchAll(PDO::FETCH_ASSOC);
     </script>
     <script src="<?php echo ASSETS_URL; ?>js/cart.js"></script>
     <script src="<?php echo ASSETS_URL; ?>js/wishlist.js"></script>
+    <script src="<?php echo ASSETS_URL; ?>js/main.js"></script>
 </body>
 </html>

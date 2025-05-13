@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/init.php';
 
-$title = "FAQ - E-Souk Tounsi";
+$page_title = "FAQ - E-Souk Tounsi";
 $description = "Foire Aux Questions - Trouvez des réponses à vos questions concernant E-Souk, nos produits et services.";
 
 // Check if user came from support.php

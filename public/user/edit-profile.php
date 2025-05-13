@@ -73,6 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$page_title = "Modifier le Profil - E-Souk Tounsi";
+$description = "Modifier les informations de votre profil sur E-Souk Tounsi. Mettez à jour vos informations personnelles, adresse, et mot de passe.";
 ?>
 
 <!DOCTYPE html>
