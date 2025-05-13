@@ -6,8 +6,8 @@ class Database {
     private function __construct() {
         try {
             $hostname = 'localhost';
-            $username = 'aziz'; // Your username
-            $password = 'jradz123';     // Your password
+            $username = ''; // Your username
+            $password = '';     // Your password
             $database = 'bd-esouk-2'; // Your database name
             
             $this->conn = new PDO(
