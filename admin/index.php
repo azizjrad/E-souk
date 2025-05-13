@@ -15,27 +15,33 @@ $stmt = $db->prepare("SELECT COUNT(*) as total FROM product");
 $stmt->execute();
 $totalProducts = $stmt->fetchColumn();
 
-// Commandes totales
+// Total orders
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM orders");
 $stmt->execute();
 $totalOrders = $stmt->fetchColumn();
 
-// Commandes en attente
+// Pending orders
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM orders WHERE status = 'Pending'");
 $stmt->execute();
 $pendingOrders = $stmt->fetchColumn();
 
-// Clients totaux
+// Total customers
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM user WHERE role = 'customer'");
 $stmt->execute();
 $totalCustomers = $stmt->fetchColumn();
 
-// Montant total des ventes
+// Total sales amount
 $stmt = $db->prepare("SELECT COALESCE(SUM(total_price), 0) as total_sales FROM orders WHERE status != 'Cancelled'");
 $stmt->execute();
 $totalSales = $stmt->fetchColumn();
 
-// Commandes récentes
+$status_translations = [
+    'Pending' => 'En attente',
+    'Completed' => 'Terminée',
+    'Cancelled' => 'Annulée',
+];
+
+// Recent orders
 $stmt = $db->prepare("SELECT o.id_order as order_id, o.order_date, o.status, 
                        u.name as customer_name, o.total_price as total_amount 
                        FROM orders o 
@@ -152,32 +158,20 @@ $recentOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <td><?php echo number_format($order['total_amount'], 2); ?> DT</td>
                                             <td>
                                                 <?php 
-                                                $statusClass = 'secondary';
-                                                // Translate status for display
-                                                $displayStatus = $order['status'];
-                                                if (strtolower($order['status']) == 'pending') {
-                                                    $statusClass = 'warning';
-                                                    $displayStatus = 'En attente';
-                                                }
-                                                if (strtolower($order['status']) == 'completed') {
-                                                    $statusClass = 'success';
-                                                    $displayStatus = 'Terminée';
-                                                }
-                                                if (strtolower($order['status']) == 'cancelled') {
-                                                    $statusClass = 'danger';
-                                                    $displayStatus = 'Annulée';
-                                                }
-                                                if (strtolower($order['status']) == 'processing') {
-                                                    $statusClass = 'info';
-                                                    $displayStatus = 'En traitement';
-                                                }
-                                                if (strtolower($order['status']) == 'shipped') {
-                                                    $statusClass = 'primary';
-                                                    $displayStatus = 'Expédiée';
-                                                }
+                                                $status_key = $order['status']; // Original status from DB
+                                                $statusClass = 'secondary'; // Default badge class
+
+                                                // Determine badge class based on the original English status
+                                                if (strtolower($status_key) == 'pending') $statusClass = 'warning';
+                                                elseif (strtolower($status_key) == 'completed') $statusClass = 'success';
+                                                elseif (strtolower($status_key) == 'cancelled') $statusClass = 'danger';
+                                                // Add more conditions for other statuses if needed for styling
+
+                                                // Get translated status for display
+                                                $display_status = isset($status_translations[$status_key]) ? htmlspecialchars($status_translations[$status_key]) : htmlspecialchars($status_key);
                                                 ?>
                                                 <span class="badge bg-<?php echo $statusClass; ?>">
-                                                    <?php echo $displayStatus; ?>
+                                                    <?php echo $display_status; ?>
                                                 </span>
                                             </td>
                                             <td>

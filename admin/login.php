@@ -10,7 +10,7 @@ if(isset($_POST['login'])) {
     
     // Validate input
     if(empty($email) || empty($password)) {
-        $error = "Veuillez saisir l'email et le mot de passe";
+        $error = "Veuillez saisir l'e-mail et le mot de passe";
     } else {
         try {
             $stmt = $db->prepare("SELECT * FROM user WHERE email = ? AND role = 'admin'");
@@ -26,10 +26,10 @@ if(isset($_POST['login'])) {
                 header("Location: index.php");
                 exit();
             } else {
-                $error = "Email ou mot de passe invalide";
+                $error = "E-mail ou mot de passe incorrect";
             }
         } catch(PDOException $e) {
-            $error = "Erreur de base de données: " . $e->getMessage();
+            $error = "Erreur de base de données : " . $e->getMessage();
         }
     }
 }
@@ -117,10 +117,10 @@ if(isset($_POST['login'])) {
                         
                         <form method="post" class="needs-validation" novalidate>
                             <div class="mb-4">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">E-mail</label>
                                 <input type="email" class="form-control" id="email" name="email" 
                                              placeholder="admin@e-souk.com" required autocomplete="email">
-                                <div class="invalid-feedback">Veuillez entrer une adresse email valide</div>
+                                <div class="invalid-feedback">Veuillez saisir une adresse e-mail valide</div>
                             </div>
                             
                             <div class="mb-4">
@@ -144,7 +144,7 @@ if(isset($_POST['login'])) {
                             <a href="../public/pages/index.php" 
                                target="_blank"
                             class="text-decoration-none text-muted">
-                                <i class="fas fa-arrow-left me-2"></i>Retour à l'Accueil
+                                <i class="fas fa-arrow-left me-2"></i>Retour à l'accueil
                             </a>
                         </div>
                     </div>
@@ -154,37 +154,6 @@ if(isset($_POST['login'])) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.toggle-password');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-        
-        // Bootstrap form validation
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
+    
 </body>
 </html>

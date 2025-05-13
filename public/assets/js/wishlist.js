@@ -251,6 +251,7 @@ function toggleWishlist(productId, element) {
       "X-Requested-With": "XMLHttpRequest",
     },
     body: formData,
+    credentials: "same-origin", // Ensure cookies are sent
   })
     .then((response) => {
       if (!response.ok) {
@@ -259,6 +260,17 @@ function toggleWishlist(productId, element) {
       return response.json();
     })
     .then((data) => {
+      // Check if authentication is required
+      if (data.requiresAuth || data.authenticated === false) {
+        displayWishlistToast("Vous devez être connecté pour gérer vos favoris", "danger");
+        
+        // Optional: Show login modal if available
+        if (typeof showLoginModal === "function") {
+          showLoginModal();
+        }
+        return; // Stop processing
+      }
+      
       if (data.success) {
         updateWishlistUI(element, data.action, data.message);
         updateWishlistCounter(data.wishlist_count);
@@ -286,11 +298,12 @@ function toggleWishlist(productId, element) {
           JSON.stringify(wishlistedProducts)
         );
       } else {
+        // Show any other error message
         handleWishlistError(data.message);
       }
     })
     .catch((error) => {
-      console.error("Error toggling wishlist:", error);
+      console.log("Wishlist operation failed:", error.message);
       handleWishlistError("Erreur de connexion au serveur");
     });
 }

@@ -59,6 +59,8 @@
   width: 100%;
   height: auto; /* was 300px */
   overflow: visible; /* was hidden */
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 8px;
 }
 
 .category-link:hover .category-card {
@@ -70,11 +72,12 @@
   width: 100%;
   height: auto;
   object-fit: contain; /* changed from cover */
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  border-radius: 8px;
 }
 
 .category-link:hover .category-image {
   transform: scale(1.05);
-  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* New Explorer Button */
@@ -192,20 +195,24 @@
   margin-bottom: 1rem;
 }
 
-/* Responsive Adjustments */
+/* Enhanced Responsive Adjustments */
 @media (max-width: 767.98px) {
   .category-row {
     margin-bottom: 3rem;
   }
 
   .category-card {
-    height: 280px;
+    height: auto;
     margin-bottom: 1.5rem;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .category-name {
     font-size: 1.8rem;
     text-align: center;
+    margin-top: 0.5rem;
   }
 
   .category-divider {
@@ -215,7 +222,23 @@
   .explore-btn {
     display: block;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
     width: 80%;
+    max-width: 250px;
+  }
+
+  /* Add animation for mobile */
+  .category-image {
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+  }
+
+  .category-link:hover .category-image {
+    transform: translateY(-5px);
+  }
+
+  /* Smaller decorative elements on mobile */
+  .decoration-shape {
+    transform: scale(0.7);
   }
 }

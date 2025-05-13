@@ -129,7 +129,7 @@ if (!empty($_SESSION['cart'])) {
 
 // Calculate totals
 $subtotal = 0;
-$shipping = !empty($_SESSION['cart']) ? 15 : 0; // Shipping is 15 DT if cart is not empty
+$shipping = !empty($_SESSION['cart']) ? 7 : 0; // Shipping is 7 DT if cart is not empty
 $item_count = 0;
 
 foreach ($_SESSION['cart'] as $product_id => $item) {

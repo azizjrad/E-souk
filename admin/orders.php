@@ -1,23 +1,23 @@
 <?php
-// Connexion à la base de données et démarrage de session
+// Database connection and session start
 session_start();
 require_once '../config/init.php';
 $db = Database::getInstance();
 
-// Vérifier si l'utilisateur est connecté et est administrateur
+// Check if user is logged in and is admin
 if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
-// Initialisation des variables
+// Initialize variables
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$limit = 10; // Éléments par page
+$limit = 10; // Items per page
 $offset = ($page - 1) * $limit;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $status_filter = isset($_GET['status']) ? $_GET['status'] : '';
 
-// Gestion de la mise à jour du statut de commande
+// Handle order status update
 if (isset($_POST['update_status'])) {
     $order_id = $_POST['order_id'];
     $new_status = $_POST['new_status'];
@@ -25,18 +25,18 @@ if (isset($_POST['update_status'])) {
     try {
         $update_stmt = $db->prepare("UPDATE orders SET status = ? WHERE id_order = ?");
         $update_stmt->execute([$new_status, $order_id]);
-        $status_message = "Statut de la commande #$order_id mis à jour en $new_status";
+        $status_message = "Le statut de la commande a été mis à jour avec succès.";
     } catch (PDOException $e) {
-        $status_message = "Erreur lors de la mise à jour du statut: " . $e->getMessage();
+        $status_message = "Erreur lors de la mise à jour du statut : " . $e->getMessage();
     }
 }
 
-// Obtenir les détails de la commande si sélectionnée
+// Get order details if an order is selected
 if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
     
     try {
-        // Récupérer les produits de la commande
+        // Get products in the order
         $products_stmt = $db->prepare("
             SELECT op.*, p.title as name, p.image, op.unit_price 
             FROM order_product op
@@ -46,7 +46,7 @@ if (isset($_GET['order_id'])) {
         $products_stmt->execute([$order_id]);
         $order_products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Récupérer les informations de la commande
+        // Get order information
         $order_stmt = $db->prepare("
             SELECT o.*, u.name as customer_name, u.address, u.phone, u.email
             FROM orders o
@@ -56,17 +56,17 @@ if (isset($_GET['order_id'])) {
         $order_stmt->execute([$order_id]);
         $order_info = $order_stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Compter le nombre total d'articles dans la commande
+        // Count total items in order
         $total_items = 0;
         foreach ($order_products as $product) {
             $total_items += $product['quantity'];
         }
     } catch (PDOException $e) {
-        $error_message = "Erreur lors de la récupération des détails de la commande: " . $e->getMessage();
+        $error_message = "Erreur lors de la récupération des détails de la commande : " . $e->getMessage();
     }
 }
 
-// Construire les conditions de la requête pour le filtrage
+// Build query conditions for filtering
 $where_conditions = [];
 $params = [];
 
@@ -84,7 +84,7 @@ if (!empty($status_filter)) {
 
 $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
 
-// Compter le nombre total de commandes pour la pagination
+// Count total orders for pagination
 try {
     $count_sql = "
         SELECT COUNT(*) as total 
@@ -97,12 +97,12 @@ try {
     $total_orders = $count_stmt->fetch(PDO::FETCH_ASSOC)['total'];
     $total_pages = ceil($total_orders / $limit);
 } catch (PDOException $e) {
-    $error_message = "Erreur lors du comptage des commandes: " . $e->getMessage();
+    $error_message = "Erreur de base de données : " . $e->getMessage();
     $total_orders = 0;
     $total_pages = 1;
 }
 
-// Récupérer toutes les commandes avec les infos clients
+// Get all orders with customer info
 try {
     $orders_sql = "
         SELECT o.id_order as order_id, o.status, o.total_price, o.order_date, u.name as customer_name, 
@@ -119,32 +119,68 @@ try {
     $orders_stmt->execute($params);
     $orders = $orders_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "Erreur lors de la récupération des commandes: " . $e->getMessage();
+    $error_message = "Erreur lors de la récupération des commandes : " . $e->getMessage();
     $orders = [];
 }
 
-// Obtenir la liste des statuts disponibles pour le filtre
-$statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
+// Get list of available statuses for filter
+$status_translations = [
+    'Pending' => 'En attente',
+    'Processing' => 'En traitement',
+    'Shipped' => 'Expédiée',
+    'Completed' => 'Terminée',
+    'Cancelled' => 'Annulée'
+];
+
+$statuses = array_keys($status_translations);
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"></html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Commandes - Panneau d'Administration</title>
+    <title>Gestion des Commandes - Panneau Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/admin.css" />
-    <link rel="stylesheet" href="./css/orders.css" />
+    <style>
+        .order-summary-card {
+            border-left: 4px solid #0d6efd;
+            background-color: #f8f9fa;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .product-img-container {
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .product-img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Barre latérale -->
+            <!-- Sidebar -->
             <?php include 'includes/header.php'; ?>
             
-            <!-- Contenu principal -->
+            <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3">
                     <h1 class="h2">Gestion des Commandes</h1>
@@ -152,6 +188,7 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                         <button class="btn btn-sm btn-outline-secondary me-2" onclick="window.print()">
                             <i class="fas fa-print"></i> Imprimer
                         </button>
+                        
                     </div>
                 </div>
                 
@@ -169,18 +206,18 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                     </div>
                 <?php endif; ?>
                 
-                <!-- Cartes récapitulatives des commandes -->
+                <!-- Order Summary Cards -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-3">
                         <div class="card order-summary-card h-100">
                             <div class="card-body">
-                                <h6 class="text-muted">Total des Commandes</h6>
+                                <h6 class="text-muted">Commandes Totales</h6>
                                 <h3><?php echo $total_orders; ?></h3>
                             </div>
                         </div>
                     </div>
                     <?php
-                    // Obtenir le nombre de commandes par statut
+                    // Get orders by status count
                     $status_counts = [
                         'Pending' => 0,
                         'Processing' => 0,
@@ -197,13 +234,13 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                             }
                         }
                     } catch (PDOException $e) {
-                        // Échouer silencieusement
+                        // Silently fail
                     }
                     ?>
                     <div class="col-md-3">
                         <div class="card order-summary-card h-100" style="border-left-color: #ffc107;">
                             <div class="card-body">
-                                <h6 class="text-muted">Commandes en Attente</h6>
+                                <h6 class="text-muted"><?php echo $status_translations['Pending']; ?></h6>
                                 <h3><?php echo $status_counts['Pending']; ?></h3>
                             </div>
                         </div>
@@ -211,7 +248,7 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                     <div class="col-md-3">
                         <div class="card order-summary-card h-100" style="border-left-color: #0dcaf0;">
                             <div class="card-body">
-                                <h6 class="text-muted">Commandes en Traitement</h6>
+                                <h6 class="text-muted"><?php echo $status_translations['Processing']; ?></h6>
                                 <h3><?php echo $status_counts['Processing']; ?></h3>
                             </div>
                         </div>
@@ -219,14 +256,14 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                     <div class="col-md-3">
                         <div class="card order-summary-card h-100" style="border-left-color: #198754;">
                             <div class="card-body">
-                                <h6 class="text-muted">Commandes Terminées</h6>
+                                <h6 class="text-muted"><?php echo $status_translations['Completed']; ?></h6>
                                 <h3><?php echo $status_counts['Completed']; ?></h3>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Recherche et Filtrage -->
+                <!-- Search and Filter -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <form method="get" class="row g-3">
@@ -241,18 +278,9 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                             <div class="col-md-4">
                                 <select name="status" class="form-select" onchange="this.form.submit()">
                                     <option value="">Tous les Statuts</option>
-                                    <?php 
-                                    $status_labels = [
-                                        'Pending' => 'En Attente',
-                                        'Processing' => 'En Traitement',
-                                        'Shipped' => 'Expédiée',
-                                        'Completed' => 'Terminée',
-                                        'Cancelled' => 'Annulée'
-                                    ];
-                                    foreach ($statuses as $status): 
-                                    ?>
+                                    <?php foreach ($statuses as $status): ?>
                                         <option value="<?php echo $status; ?>" <?php echo ($status_filter === $status ? 'selected' : ''); ?>>
-                                            <?php echo $status_labels[$status]; ?>
+                                            <?php echo $status_translations[$status]; ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -264,7 +292,7 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                     </div>
                 </div>
                 
-                <!-- Tableau des Commandes -->
+                <!-- Orders Table -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Commandes</h5>
@@ -274,7 +302,7 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                             <table class="table table-striped table-hover align-middle">
                                 <thead>
                                     <tr>
-                                        <th>N° Commande</th>
+                                        <th>ID Commande</th>
                                         <th>Client</th>
                                         <th>Articles</th>
                                         <th>Statut</th>
@@ -301,42 +329,36 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                                                     case 'Pending':
                                                         $status_color = 'warning';
                                                         $status_icon = 'clock';
-                                                        $display_status = 'En Attente';
                                                         break;
                                                     case 'Processing':
                                                         $status_color = 'info';
                                                         $status_icon = 'gear';
-                                                        $display_status = 'En Traitement';
                                                         break;
                                                     case 'Shipped':
                                                         $status_color = 'primary';
                                                         $status_icon = 'truck';
-                                                        $display_status = 'Expédiée';
                                                         break;
                                                     case 'Completed':
                                                         $status_color = 'success';
                                                         $status_icon = 'check-circle';
-                                                        $display_status = 'Terminée';
                                                         break;
                                                     case 'Cancelled':
                                                         $status_color = 'danger';
                                                         $status_icon = 'times-circle';
-                                                        $display_status = 'Annulée';
                                                         break;
-                                                    default:
-                                                        $display_status = $order['status'];
                                                 }
                                             ?>
                                             <span class="status-badge bg-<?php echo $status_color; ?>">
                                                 <i class="fas fa-<?php echo $status_icon; ?>"></i>
-                                                <?php echo $display_status; ?>
+                                                <?php echo $status_translations[$order['status']]; ?>
                                             </span>
                                         </td>
-                                        <td><?php echo number_format($order['total_price'], 2); ?> DT</td>
+                                        <td><?php echo number_format($order['total_price'], 2, ',', ' '); ?> DT</td>
                                         <td>
                                             <?php 
                                                 $order_date = new DateTime($order['order_date']);
-                                                echo $order_date->format('d M Y'); 
+                                                $mois = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre");
+                                                echo $order_date->format('d') . ' ' . $mois[(int)$order_date->format('n')] . ' ' . $order_date->format('Y'); 
                                                 echo '<br><small class="text-muted">' . $order_date->format('H:i') . '</small>';
                                             ?>
                                         </td>
@@ -402,13 +424,16 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                     </div>
                 </div>
                 
-                <!-- Section Détails de Commande (affichée lorsqu'une commande est sélectionnée) -->
+                <!-- Order Details Section (shown when an order is selected) -->
                 <?php if (isset($order_info)): ?>
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title mb-0">Détails de la Commande #<?php echo $order_info['id_order']; ?></h5>
-                            <small class="text-muted">Passée le <?php echo date('d F Y \à H:i', strtotime($order_info['order_date'])); ?></small>
+                            <small class="text-muted">Passée le <?php 
+                                $placed_date = new DateTime($order_info['order_date']);
+                                echo $placed_date->format('d') . ' ' . $mois[(int)$placed_date->format('n')] . ' ' . $placed_date->format('Y') . ' à ' . $placed_date->format('H:i'); 
+                            ?></small>
                         </div>
                         <div>
                             <a href="print_order.php?id=<?php echo $order_info['id_order']; ?>" class="btn btn-sm btn-outline-secondary me-2" target="_blank">
@@ -425,10 +450,10 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-3 text-muted">Informations Client</h6>
-                                        <p><strong>Nom:</strong> <?php echo htmlspecialchars($order_info['customer_name']); ?></p>
-                                        <p><strong>Email:</strong> <?php echo htmlspecialchars($order_info['email']); ?></p>
-                                        <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($order_info['phone']); ?></p>
-                                        <p class="mb-0"><strong>Adresse de Livraison:</strong><br><?php echo nl2br(htmlspecialchars($order_info['address'])); ?></p>
+                                        <p><strong>Nom :</strong> <?php echo htmlspecialchars($order_info['customer_name']); ?></p>
+                                        <p><strong>Email :</strong> <?php echo htmlspecialchars($order_info['email']); ?></p>
+                                        <p><strong>Téléphone :</strong> <?php echo htmlspecialchars($order_info['phone']); ?></p>
+                                        <p class="mb-0"><strong>Adresse de Livraison :</strong><br><?php echo nl2br(htmlspecialchars($order_info['address'])); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -436,64 +461,58 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-3 text-muted">Résumé de la Commande</h6>
-                                        <p><strong>N° Commande:</strong> #<?php echo $order_info['id_order']; ?></p>
-                                        <p><strong>Articles:</strong> <?php echo $total_items; ?> articles</p>
+                                        <p><strong>ID Commande :</strong> #<?php echo $order_info['id_order']; ?></p>
+                                        <p><strong>Articles :</strong> <?php echo $total_items; ?> articles</p>
                                         <p>
-                                            <strong>Statut:</strong> 
+                                            <strong>Statut :</strong> 
                                             <?php 
                                                 $status_color = 'secondary';
                                                 $status_icon = 'circle-question';
-                                                $display_status = $order_info['status'];
                                                 
                                                 switch($order_info['status']) {
                                                     case 'Pending':
                                                         $status_color = 'warning';
                                                         $status_icon = 'clock';
-                                                        $display_status = 'En Attente';
                                                         break;
                                                     case 'Processing':
                                                         $status_color = 'info';
                                                         $status_icon = 'gear';
-                                                        $display_status = 'En Traitement';
                                                         break;
                                                     case 'Shipped':
                                                         $status_color = 'primary';
                                                         $status_icon = 'truck';
-                                                        $display_status = 'Expédiée';
                                                         break;
                                                     case 'Completed':
                                                         $status_color = 'success';
                                                         $status_icon = 'check-circle';
-                                                        $display_status = 'Terminée';
                                                         break;
                                                     case 'Cancelled':
                                                         $status_color = 'danger';
                                                         $status_icon = 'times-circle';
-                                                        $display_status = 'Annulée';
                                                         break;
                                                 }
                                             ?>
                                             <span class="status-badge bg-<?php echo $status_color; ?>">
                                                 <i class="fas fa-<?php echo $status_icon; ?>"></i>
-                                                <?php echo $display_status; ?>
+                                                <?php echo $status_translations[$order_info['status']]; ?>
                                             </span>
                                         </p>
-                                        <p class="h5 mb-0"><strong>Total:</strong> <?php echo number_format($order_info['total_price'], 2); ?> DT</p>
+                                        <p class="h5 mb-0"><strong>Total :</strong> <?php echo number_format($order_info['total_price'], 2, ',', ' '); ?> DT</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Formulaire de mise à jour de statut -->
+                        <!-- Update Status Form -->
                         <form method="post" class="card mb-4">
                             <div class="card-body">
-                                <h6 class="card-subtitle mb-3 text-muted">Mettre à jour le Statut</h6>
+                                <h6 class="card-subtitle mb-3 text-muted">Mettre à Jour le Statut de la Commande</h6>
                                 <input type="hidden" name="order_id" value="<?php echo $order_info['id_order']; ?>">
                                 <div class="row g-3 align-items-center">
                                     <div class="col-md-8">
                                         <select name="new_status" id="new_status" class="form-select">
-                                            <option value="Pending" <?php echo ($order_info['status'] == 'Pending') ? 'selected' : ''; ?>>En Attente</option>
-                                            <option value="Processing" <?php echo ($order_info['status'] == 'Processing') ? 'selected' : ''; ?>>En Traitement</option>
+                                            <option value="Pending" <?php echo ($order_info['status'] == 'Pending') ? 'selected' : ''; ?>>En attente</option>
+                                            <option value="Processing" <?php echo ($order_info['status'] == 'Processing') ? 'selected' : ''; ?>>En traitement</option>
                                             <option value="Shipped" <?php echo ($order_info['status'] == 'Shipped') ? 'selected' : ''; ?>>Expédiée</option>
                                             <option value="Completed" <?php echo ($order_info['status'] == 'Completed') ? 'selected' : ''; ?>>Terminée</option>
                                             <option value="Cancelled" <?php echo ($order_info['status'] == 'Cancelled') ? 'selected' : ''; ?>>Annulée</option>
@@ -508,8 +527,8 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                             </div>
                         </form>
                         
-                        <!-- Produits de la commande -->
-                        <h6 class="mb-3">Produits de la Commande</h6>
+                        <!-- Order Products -->
+                        <h6 class="mb-3">Produits dans la Commande</h6>
                         <div class="table-responsive mb-4">
                             <table class="table table-bordered align-middle">
                                 <thead>
@@ -537,16 +556,16 @@ $statuses = ['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><?php echo number_format($product['unit_price'], 2); ?> DT</td>
+                                        <td><?php echo number_format($product['unit_price'], 2, ',', ' '); ?> DT</td>
                                         <td><?php echo $product['quantity']; ?></td>
-                                        <td><?php echo number_format($product['unit_price'] * $product['quantity'], 2); ?> DT</td>
+                                        <td><?php echo number_format($product['unit_price'] * $product['quantity'], 2, ',', ' '); ?> DT</td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3" class="text-end">Total:</th>
-                                        <th><?php echo number_format($order_info['total_price'], 2); ?> DT</th>
+                                        <th colspan="3" class="text-end">Total :</th>
+                                        <th><?php echo number_format($order_info['total_price'], 2, ',', ' '); ?> DT</th>
                                     </tr>
                                 </tfoot>
                             </table>

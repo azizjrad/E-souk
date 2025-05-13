@@ -20,7 +20,7 @@ define('TEMPLATES_PATH', PUBLIC_PATH . '/templates');
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
 $domainName = $_SERVER['HTTP_HOST'];
 $basePath = '/E-souk-main/';
-define('ROOT_URL', 'http://localhost/E-souk-main/');
+define('ROOT_URL', 'https://esouk-tounsi.ct.ws/');
 define('ASSETS_URL', ROOT_URL . 'public/assets/');
 define('UPLOADS_URL', ROOT_URL . 'public/root_uploads/');
 

@@ -1,8 +1,14 @@
 <?php
-// Initialiser la session
+// Initialize the session
 session_start();
+
+// Prevent caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 require_once "../config/init.php";
-// Vérifier si l'utilisateur est connecté et a des privilèges d'administrateur
+// Check if the user is logged in and has admin privileges
 if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "admin") {
     header("location: login.php");
     exit;
@@ -11,7 +17,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "admin") {
 
 $conn = Database::getInstance();
 
-// Traiter l'opération d'ajout d'utilisateur
+// Process add user operation
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "add_user") {
     $name = trim($_POST["name"]);
     $email = trim($_POST["email"]);
@@ -20,21 +26,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     $address = trim($_POST["address"] ?? "");
     $phone = trim($_POST["phone"] ?? "");
     
-    // Valider les entrées
+    // Validate inputs
     $errors = [];
     if (empty($name)) $errors[] = "Le nom est requis";
-    if (empty($email)) $errors[] = "L'email est requis";
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format d'email invalide";
+    if (empty($email)) $errors[] = "Le courriel est requis";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format de courriel invalide";
     if (empty($password)) $errors[] = "Le mot de passe est requis";
     elseif (strlen($password) < 6) $errors[] = "Le mot de passe doit contenir au moins 6 caractères";
     if (empty($role)) $errors[] = "Le rôle est requis";
     
-    // Vérifier si l'email existe déjà
+    // Check if email already exists
     $checkStmt = $conn->prepare("SELECT id_user FROM user WHERE email = ?");
     $checkStmt->bindParam(1, $email, PDO::PARAM_STR);
     $checkStmt->execute();
     if ($checkStmt->rowCount() > 0) {
-        $errors[] = "Cet email existe déjà";
+        $errors[] = "Le courriel existe déjà";
     }
     
     if (empty($errors)) {
@@ -51,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
         if ($stmt->execute()) {
             $_SESSION["success_msg"] = "Utilisateur ajouté avec succès";
         } else {
-            $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
+            $_SESSION["error_msg"] = "Quelque chose s'est mal passé. Veuillez réessayer plus tard.";
         }
         
         header("location: users.php");
@@ -61,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     }
 }
 
-// Traiter l'opération de modification d'utilisateur
+// Process edit user operation
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "edit_user") {
     $id = trim($_POST["id_user"]);
     $name = trim($_POST["name"]);
@@ -71,20 +77,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     $phone = trim($_POST["phone"] ?? "");
     $password = trim($_POST["password"] ?? "");
     
-    // Valider les entrées
+    // Validate inputs
     $errors = [];
     if (empty($name)) $errors[] = "Le nom est requis";
-    if (empty($email)) $errors[] = "L'email est requis";
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format d'email invalide";
+    if (empty($email)) $errors[] = "Le courriel est requis";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Format de courriel invalide";
     if (empty($role)) $errors[] = "Le rôle est requis";
     
-    // Vérifier si l'email existe déjà pour d'autres utilisateurs
+    // Check if email already exists for other users
     $checkStmt = $conn->prepare("SELECT id_user FROM user WHERE email = ? AND id_user != ?");
     $checkStmt->bindParam(1, $email, PDO::PARAM_STR);
     $checkStmt->bindParam(2, $id, PDO::PARAM_INT);
     $checkStmt->execute();
     if ($checkStmt->rowCount() > 0) {
-        $errors[] = "Cet email existe déjà";
+        $errors[] = "Le courriel existe déjà";
     }
     
     if (empty($errors)) {
@@ -113,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
         if ($stmt->execute()) {
             $_SESSION["success_msg"] = "Utilisateur mis à jour avec succès";
         } else {
-            $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
+            $_SESSION["error_msg"] = "Quelque chose s'est mal passé. Veuillez réessayer plus tard.";
         }
         
         header("location: users.php");
@@ -123,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["
     }
 }
 
-// Traiter l'opération de suppression
+// Process delete operation
 if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"])) {
     $id = trim($_GET["id"]);
     $sql = "DELETE FROM user WHERE id_user = ?";
@@ -134,7 +140,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"]))
     if ($stmt->execute()) {
         $_SESSION["success_msg"] = "Utilisateur supprimé avec succès";
     } else {
-        $_SESSION["error_msg"] = "Une erreur s'est produite. Veuillez réessayer plus tard.";
+        $_SESSION["error_msg"] = "Quelque chose s'est mal passé. Veuillez réessayer plus tard.";
     }
     
     header("location: users.php");
@@ -142,24 +148,28 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"]))
 }
 
 try {
-    // Récupérer tous les utilisateurs avec PDO
+    // Fetch all users with PDO
     $sql = "SELECT id_user, name, email, role, address, phone, created_at FROM user ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $_SESSION["error_msg"] = "Erreur de base de données: " . $e->getMessage();
+    $_SESSION["error_msg"] = "Erreur de base de données : " . $e->getMessage();
     $users = [];
 }
+
+$role_translations = [
+    "admin" => "Administrateur",
+    "customer" => "Utilisateur" 
+];
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<!-- La section head reste la même -->
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Utilisateurs - Panneau d'Administration</title>
+    <title>Gestion des Utilisateurs - Panneau Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/admin.css">
@@ -171,7 +181,7 @@ try {
     
     <div class="container-fluid">
         <div class="row">
-            <!-- Barre latérale manquante ici -->
+            <!-- Missing sidebar here -->
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
                 <h2>Gestion des Utilisateurs</h2>
                 
@@ -194,24 +204,23 @@ try {
                 <div class="d-flex justify-content-between mb-3">
                     <p>Gérer les utilisateurs du système</p>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="fas fa-plus"></i> Ajouter un Nouvel Utilisateur
+                        <i class="fas fa-plus"></i> Ajouter un nouvel utilisateur
                     </button>
                 </div>
                 
-                <!-- Structure du tableau mise à jour -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Liste des Utilisateurs
+                        Liste des utilisateurs
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Identifiant</th>
                                         <th>Nom</th>
-                                        <th>Email</th>
+                                        <th>Courriel</th>
                                         <th>Rôle</th>
                                         <th>Adresse</th>
                                         <th>Téléphone</th>
@@ -228,19 +237,19 @@ try {
                                             <td><?= htmlspecialchars($row["email"]) ?></td>
                                             <td>
                                                 <span class="badge bg-<?= $row["role"] == "admin" ? "danger" : "info" ?>">
-                                                    <?= $row["role"] == "admin" ? "Admin" : "Utilisateur" ?>
+                                                    <?= htmlspecialchars($role_translations[$row["role"]] ?? ucfirst($row["role"])) ?>
                                                 </span>
                                             </td>
                                             <td><?= htmlspecialchars($row["address"] ?? '') ?></td>
                                             <td><?= htmlspecialchars($row["phone"] ?? '') ?></td>
-                                            <td><?= date('d/m/Y H:i', strtotime($row["created_at"])) ?></td>
+                                            <td><?= !empty($row["created_at"]) ? date("d/m/Y H:i", strtotime($row["created_at"])) : '' ?></td>
                                             <td>
-                                                <button class="btn btn-sm btn-primary" onclick="editUser(<?= $row['id_user'] ?>, '<?= addslashes($row['name']) ?>', '<?= addslashes($row['email']) ?>', '<?= $row['role'] ?>', '<?= addslashes($row['address'] ?? '') ?>', '<?= addslashes($row['phone'] ?? '') ?>')">
+                                                <button class="btn btn-sm btn-primary" onclick="editUser(<?= $row['id_user'] ?>, '<?= addslashes(htmlspecialchars($row['name'])) // Ensure htmlspecialchars for security ?>', '<?= addslashes(htmlspecialchars($row['email'])) ?>', '<?= $row['role'] ?>', '<?= addslashes(htmlspecialchars($row['address'] ?? '')) ?>', '<?= addslashes(htmlspecialchars($row['phone'] ?? '')) ?>')">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <a href="users.php?action=delete&id=<?= $row["id_user"] ?>" 
                                                    class="btn btn-sm btn-danger" 
-                                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
+                                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -260,12 +269,12 @@ try {
         </div>
     </div>
     
-    <!-- Modal d'ajout d'utilisateur -->
+    <!-- Add User Modal -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Ajouter un Nouvel Utilisateur</h5>
+                    <h5 class="modal-title" id="addUserModalLabel">Ajouter un nouvel utilisateur</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <form action="users.php" method="post">
@@ -277,7 +286,7 @@ try {
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Courriel</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                         </div>
@@ -289,9 +298,9 @@ try {
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Rôle</label>
                                 <select class="form-select" id="role" name="role" required>
-                                    <option value="">Sélectionner un Rôle</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">Utilisateur</option>
+                                    <option value="">Sélectionner un rôle</option>
+                                    <option value="admin">Administrateur</option>
+                                    <option value="customer">Utilisateur</option>
                                 </select>
                             </div>
                         </div>
@@ -308,19 +317,19 @@ try {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary">Ajouter l'Utilisateur</button>
+                        <button type="submit" class="btn btn-primary">Ajouter l'utilisateur</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal de modification d'utilisateur -->
+    <!-- Edit User Modal -->
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Modifier l'Utilisateur</h5>
+                    <h5 class="modal-title" id="editUserModalLabel">Modifier l'utilisateur</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <form action="users.php" method="post">
@@ -333,21 +342,21 @@ try {
                                 <input type="text" class="form-control" id="edit_name" name="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="edit_email" class="form-label">Email</label>
+                                <label for="edit_email" class="form-label">Courriel</label>
                                 <input type="email" class="form-control" id="edit_email" name="email" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="edit_password" class="form-label">Mot de passe (Laisser vide pour conserver l'actuel)</label>
+                                <label for="edit_password" class="form-label">Mot de passe (Laissez vide pour conserver l'actuel)</label>
                                 <input type="password" class="form-control" id="edit_password" name="password">
                             </div>
                             <div class="col-md-6">
                                 <label for="edit_role" class="form-label">Rôle</label>
                                 <select class="form-select" id="edit_role" name="role" required>
-                                    <option value="">Sélectionner un Rôle</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">Utilisateur</option>
+                                    <option value="">Sélectionner un rôle</option>
+                                    <option value="admin">Administrateur</option>
+                                    <option value="customer">Utilisateur</option>
                                 </select>
                             </div>
                         </div>
@@ -364,7 +373,7 @@ try {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary">Mettre à jour l'Utilisateur</button>
+                        <button type="submit" class="btn btn-primary">Mettre à jour l'utilisateur</button>
                     </div>
                 </form>
             </div>
@@ -372,20 +381,22 @@ try {
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json"></script>
    
     <script>
         $(document).ready(function() {
             $('#usersTable').DataTable({
                 language: {
-                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+                    url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json"
                 }
             });
         });
         
         function editUser(id, name, email, role, address, phone) {
-            // Définir les valeurs dans le modal de modification
+            // Set values in the edit modal
             document.getElementById('edit_id_user').value = id;
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_email').value = email;
@@ -393,10 +404,10 @@ try {
             document.getElementById('edit_address').value = address || '';
             document.getElementById('edit_phone').value = phone || '';
             
-            // Effacer le champ de mot de passe
+            // Clear password field
             document.getElementById('edit_password').value = '';
             
-            // Afficher le modal
+            // Show the modal
             var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
             editModal.show();
         }

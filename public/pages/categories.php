@@ -47,51 +47,83 @@ $breadcrumbs = [
                 <div class="row category-row align-items-center position-relative mb-5">
                     <!-- Add decorative shapes based on even/odd -->
                     <div class="decoration-shape <?= $isEven ? 'shape-1' : 'shape-2' ?>"></div>
-                    <?php if($isEven): ?>
-                        <!-- Left image, right text (even rows) -->
-                        <div class="col-md-6 mb-4 mb-md-0">
+                    
+                    <!-- Desktop Layout (Hidden on Mobile) -->
+                    <div class="d-none d-md-block">
+                        <?php if($isEven): ?>
+                            <!-- Left image, right text (even rows) -->
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <a href="category-details.php?id=<?= $category['id_category'] ?>" class="category-link">
+                                        <div class="category-card shadow-sm">
+                                            <?php if(!empty($category['image'])): ?>
+                                                <img src="../../root_uploads/categories/<?= htmlspecialchars($category['image']) ?>" 
+                                                    alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
+                                            <?php else: ?>
+                                                <img src="../../assets/images/no-image.jpg" 
+                                                    alt="No Image Available" class="category-image">
+                                            <?php endif; ?>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-5 offset-md-1">
+                                    <h2 class="category-name"><?= htmlspecialchars($category['name']) ?></h2>
+                                    <div class="category-divider"></div>
+                                    <a href="category-details.php?id=<?= $category['id_category'] ?>" class="explore-btn">
+                                        Explorer <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <!-- Left text, right image (odd rows) -->
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h2 class="category-name"><?= htmlspecialchars($category['name']) ?></h2>
+                                    <div class="category-divider"></div>
+                                    <a href="category-details.php?id=<?= $category['id_category'] ?>" class="explore-btn">
+                                        Explorer <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 offset-md-1">
+                                    <a href="category-details.php?id=<?= $category['id_category'] ?>" class="category-link">
+                                        <div class="category-card shadow-sm">
+                                            <?php if(!empty($category['image'])): ?>
+                                                <img src="../../root_uploads/categories/<?= htmlspecialchars($category['image']) ?>" 
+                                                    alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
+                                            <?php else: ?>
+                                                <img src="../../assets/images/no-image.jpg" 
+                                                    alt="No Image Available" class="category-image">
+                                            <?php endif; ?>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Mobile Layout (Image First, Then Text - Consistent for All Categories) -->
+                    <div class="d-block d-md-none">
+                        <div class="text-center mb-4">
                             <a href="category-details.php?id=<?= $category['id_category'] ?>" class="category-link">
                                 <div class="category-card shadow-sm">
                                     <?php if(!empty($category['image'])): ?>
                                         <img src="../../root_uploads/categories/<?= htmlspecialchars($category['image']) ?>" 
-                                             alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
+                                            alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
                                     <?php else: ?>
                                         <img src="../../assets/images/no-image.jpg" 
-                                             alt="No Image Available" class="category-image">
+                                            alt="No Image Available" class="category-image">
                                     <?php endif; ?>
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-5 offset-md-1">
+                        <div class="text-center">
                             <h2 class="category-name"><?= htmlspecialchars($category['name']) ?></h2>
                             <div class="category-divider"></div>
                             <a href="category-details.php?id=<?= $category['id_category'] ?>" class="explore-btn">
                                 Explorer <i class="fas fa-arrow-right ms-2"></i>
                             </a>
                         </div>
-                    <?php else: ?>
-                        <!-- Left text, right image (odd rows) -->
-                        <div class="col-md-5">
-                            <h2 class="category-name"><?= htmlspecialchars($category['name']) ?></h2>
-                            <div class="category-divider"></div>
-                            <a href="category-details.php?id=<?= $category['id_category'] ?>" class="explore-btn">
-                                Explorer <i class="fas fa-arrow-right ms-2"></i>
-                            </a>
-                        </div>
-                        <div class="col-md-6 offset-md-1">
-                            <a href="category-details.php?id=<?= $category['id_category'] ?>" class="category-link">
-                                <div class="category-card shadow-sm">
-                                    <?php if(!empty($category['image'])): ?>
-                                        <img src="../../root_uploads/categories/<?= htmlspecialchars($category['image']) ?>" 
-                                             alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
-                                    <?php else: ?>
-                                        <img src="../../assets/images/no-image.jpg" 
-                                             alt="No Image Available" class="category-image">
-                                    <?php endif; ?>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

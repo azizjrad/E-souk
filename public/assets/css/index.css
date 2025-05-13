@@ -207,6 +207,18 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Mobile devices - Always show the overlay effects without hover */
+@media (max-width: 767.98px) {
+  .artisan-image-container img {
+    transform: scale(1.1);
+  }
+  .artisan-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .artisan-info h3 {
   font-size: 1.8rem;
   font-weight: 700;
@@ -894,9 +906,6 @@
   .block-image.sc-2 {
     width: 95%;
     border-radius: 15px;
-  }
-  .tunisian-scroll-top {
-    display: none !important;
   }
 }
 @media (max-width: 576px) {

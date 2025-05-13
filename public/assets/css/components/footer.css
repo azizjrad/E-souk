@@ -1,38 +1,95 @@
 footer {
-    background: var(--color-dark);
+  background: var(--color-dark);
+}
+
+footer h5 {
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+footer a {
+  color: var(--color-white);
+  font-size: 1rem;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+footer a:hover {
+  color: var(--color-accent);
+  transform: translateY(-3px) scale(1.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.social-icons a {
+  font-size: 1.2rem;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+footer a:hover i {
+  animation: pulse 0.5s ease infinite alternate;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767.98px) {
+  footer .col-md-3 {
+    text-align: center !important;
+    margin-bottom: 1.5rem;
   }
-  
+
+  footer .list-unstyled {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer .text-md-start,
+  footer .text-md-end {
+    text-align: center !important;
+  }
+
+  footer .mb-3 {
+    margin-bottom: 1.5rem !important;
+  }
+
   footer h5 {
-    color: var(--color-accent);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-top: 0.5rem;
   }
-  
-  footer a {
-    color: var(--color-white);
-    font-size: 1.2rem;
-    margin: 0 10px;
-    transition: all 0.3s ease;
-    display: inline-block;
+
+  .social-icons {
+    margin-top: 0.5rem;
   }
-  
-  footer a:hover {
-    color: var(--color-accent);
-    transform: translateY(-3px) scale(1.1);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Small phone screens */
+@media (max-width: 375px) {
+  footer {
+    padding: 1.5rem 0.5rem !important;
   }
-  
-  .social-icons a {
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
+
+  footer h5 {
+    font-size: 1rem;
   }
-  
-  .social-icons a:hover {
-    color: var(--color-accent);
-    transform: translateY(-2px);
+
+  footer a,
+  footer li {
+    font-size: 0.9rem;
   }
-  
-  footer a:hover i {
-    animation: pulse 0.5s ease infinite alternate;
+
+  footer img {
+    height: 30px;
   }
-  
+}

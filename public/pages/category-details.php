@@ -151,16 +151,13 @@ if (empty($featuredImages)) {
                     </nav>
                     <h1 class="hero-title"><?= htmlspecialchars($category['name']) ?></h1>
                     <p class="hero-subtitle">
-                        <?php if (isset($category['discription']) && $category['discription'] !== null): ?>
-                            <?= htmlspecialchars(substr($category['discription'], 0, 150)) ?>
-                            <?= (strlen($category['discription']) > 150) ? '...' : '' ?>
-                        <?php else: ?>
+                        <?php if (isset($category['discription'])  !== null): ?>
                             Découvrez notre sélection de produits <?= htmlspecialchars($category['name']) ?>
                         <?php endif; ?>
                     </p>
                     <div class="hero-buttons d-flex mt-4">
                         <a href="#product-grid" class="btn btn-primary me-3">Découvrir les produits</a>
-                        <a href="index.php" class="btn btn-outline-light">Retour à l'accueil</a>
+                        
                     </div>
                 </div>
             </div>
@@ -175,8 +172,8 @@ if (empty($featuredImages)) {
                     <div class="col-lg-7">
                         <h2 class="mb-4"><?= htmlspecialchars($category['name']) ?></h2>
                         <div class="category-description">
-                            <?php if (isset($category['discription']) && $category['discription'] !== null): ?>
-                                <?= nl2br(htmlspecialchars($category['discription'])) ?>
+                            <?php if (isset($category['description']) !== null): ?>
+                                <?= nl2br(htmlspecialchars($category['description'])) ?>
                             <?php else: ?>
                                 <p>Découvrez notre gamme exclusive de produits <?= htmlspecialchars($category['name']) ?>.</p>
                             <?php endif; ?>
